@@ -96,19 +96,129 @@ def login():
 ###########################(GP Feature)##############################################################
 
 # View GP Profile/Account
+@app.route('/gp/profile/<gp_id>', methods=['GET'])
+@jwt_required
+def view_gp_profile(gp_id):
+    # Convert gp_id from string to ObjectId to query MongoDB
+    gp_object_id = ObjectId(gp_id)
+    
+    # Find the GP in the database by ID
+    gp = GPS_collection.find_one({'_id': gp_object_id})
+
+    if gp:
+        # Convert MongoDB's ObjectId to string for JSON serialization
+        gp['_id'] = str(gp['_id'])
+        
+        # Remove sensitive information, if any, before sending it to the client
+        gp.pop('password', None)
+
+        return jsonify(gp), 200
+    else:
+        return jsonify({"error": "GP not found"}), 404
 
 
 
 # Edit GP Profile/Account
+@app.route('/gp/edit_profile/<gp_id>', methods=['PUT'])
+@jwt_required
+def edit_gp_profile(gp_id):
+    # Ensure the user requesting the edit is the GP or an admin
+    current_user_id = request.current_user['user_id']
+    current_user_role = request.current_user['role']
+    gp_object_id = ObjectId(gp_id)
+
+    # Only allow the GP or an admin to edit the profile
+    if str(gp_object_id) != current_user_id and current_user_role != 'admin':
+        return jsonify({"error": "Unauthorized"}), 403
+
+    data = request.json
+
+    # Validate the input data as needed
+    # Example: Ensure 'name' and 'contactNumber' are present if they are required fields
+    update_data = {}
+    if 'name' in data:
+        update_data['name'] = data['name']
+    if 'specialisation' in data:
+        update_data['specialisation'] = data['specialisation']
+    if 'contactNumber' in data:
+        update_data['contactNumber'] = data['contactNumber']
+    # Add more fields as necessary
+
+    if not update_data:
+        return jsonify({"error": "No valid fields provided for update"}), 400
+
+    # Update the GP document in the database
+    result = GPS_collection.update_one({'_id': gp_object_id}, {'$set': update_data})
+
+    if result.matched_count:
+        return jsonify({"message": "GP profile updated successfully"}), 200
+    else:
+        return jsonify({"error": "GP not found or update failed"}), 404
 
 
 
 # Edit Appointment i.e change from pending to accepted/confirmed
+@app.route('/appointments/edit_status/<appointment_id>', methods=['PUT'])
+@jwt_required
+def edit_appointment_status(appointment_id):
+    # Extract the GP's ID from the JWT payload
+    current_gp_id = ObjectId(request.current_user['user_id'])
+
+    # Ensure the request is made by a GP
+    if request.current_user['role'] != 'GP':
+        return jsonify({"error": "Unauthorized"}), 403
+
+    # Convert the appointment_id from string to ObjectId
+    appointment_object_id = ObjectId(appointment_id)
+
+    # Retrieve the new status from the request body
+    data = request.json
+    new_status = data.get('status')
+
+    # Validate the new status
+    if new_status not in ['accepted', 'confirmed', 'declined']:
+        return jsonify({"error": "Invalid status"}), 400
+
+    # Find the appointment and ensure it belongs to the current GP
+    appointment = Appointments_collection.find_one({'_id': appointment_object_id, 'gpId': current_gp_id})
+    
+    if not appointment:
+        return jsonify({"error": "Appointment not found or does not belong to this GP"}), 404
+
+    # Update the appointment status
+    result = Appointments_collection.update_one(
+        {'_id': appointment_object_id, 'gpId': current_gp_id},
+        {'$set': {'status': new_status}}
+    )
+
+    if result.modified_count:
+        return jsonify({"message": "Appointment status updated successfully"}), 200
+    else:
+        return jsonify({"error": "Failed to update appointment status"}), 500
 
 
 
 # View all GP Appointments
+@app.route('/gp_appointments', methods=['GET'])
+@jwt_required
+def get_gp_appointments():
+    if request.current_user['role'] == 'GP':
+        gp_id = ObjectId(request.current_user['user_id'])
 
+        # Retrieve appointments for the specified GP
+        gp_appointments = Appointments_collection.find({"gpId": gp_id})
+
+        # Convert MongoDB cursor to a list and handle ObjectId serialization
+        appointments_list = []
+        for appointment in gp_appointments:
+            appointment['_id'] = str(appointment['_id'])
+            appointment['userId'] = str(appointment['userId'])
+            appointment['gpId'] = str(appointment['gpId'])
+            appointments_list.append(appointment)
+
+        return jsonify(appointments_list)
+    else:
+        return jsonify({"error": "Unauthorized access"}), 403
 
 #######################################################################################################
 ###########################(User Feature)##############################################################
