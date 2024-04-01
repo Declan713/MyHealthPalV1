@@ -34,7 +34,7 @@ users_list = [
             "basket": [],
             "purchaseHistory": [],
             "admin": True,
-            "role": "admin_user"
+            "role": "admin"
         },
 ]
 

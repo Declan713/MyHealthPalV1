@@ -78,17 +78,89 @@ def login():
     else:
         return jsonify({"error": "Invalid email or password"}), 401
     
-# # Logout Route
+# Logout Route
+@app.route('/logout', methods=['POST'])
+@jwt_required
+def logout():
+    # Instruct the client to remove the token from storage
+    return jsonify({"message": "Logged out successfully. Please remove the token from your storage."}), 200
 
-# # Register New Account
 
+# Register New Account
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.json  # Get data from the request's body
+
+    # Basic validation to check if essential fields are provided
+    if not data.get('name') or not data.get('email') or not data.get('password'):
+        return jsonify({"error": "Missing name, email, or password"}), 400
+
+    # Check if the user already exists
+    if users_collection.find_one({'email': data['email']}):
+        return jsonify({"error": "User already exists"}), 409
+
+    # Hash the password before storing it in the database
+    hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+
+    # Prepare the user document for insertion
+    user_document = {
+        "name": data['name'],
+        "email": data['email'],
+        "password": hashed_password,
+        "medicalNumber": data.get('medicalNumber', ''),  # Optional field
+        "basket": [],
+        "purchaseHistory": [],
+        "role": "user"  # Default role
+    }
+
+    # Insert the new user into the database
+    result = users_collection.insert_one(user_document)
+
+    # Check if the user was successfully inserted
+    if result.inserted_id:
+        return jsonify({"message": "User registered successfully", "user_id": str(result.inserted_id)}), 201
+    else:
+        return jsonify({"error": "Registration failed"}), 500
 
 
 
 # Show all items
+@app.route('/items', methods=['GET'])
+def get_all_items():
+    # Find all items in the collection
+    items = items_collection.find()
+    
+    # Convert the items to a list and then to a format that can be JSON serialized
+    items_list = []
+    for item in items:
+        item['_id'] = str(item['_id'])  # Convert ObjectId to string for JSON serialization
+        items_list.append(item)
+    
+    return jsonify(items_list), 200
+
     
 # Show one item
+@app.route('/items/<item_id>', methods=['GET'])
+def get_item(item_id):
+    try:
+        # Convert the string ID to a MongoDB ObjectId
+        object_id = ObjectId(item_id)
+    except:
+        # If the ID is not a valid ObjectId, return an error
+        return jsonify({"error": "Invalid item ID format"}), 400
     
+    # Find the item in the collection using the ObjectId
+    item = items_collection.find_one({'_id': object_id})
+    
+    if item:
+        # Convert ObjectId to string for JSON serialization
+        item['_id'] = str(item['_id'])
+        
+        return jsonify(item), 200
+    else:
+        return jsonify({"error": "Item not found"}), 404
+
+
 # Search for item
 
 
@@ -549,24 +621,209 @@ def get_user_appointments(user_id):
 ###########################(Admin Feature)##############################################################
 
 # Show all Users
+@app.route('/admin/users', methods=['GET'])
+@jwt_required
+def get_all_users():
+    # Check if the current user is an admin
+    current_user_role = request.current_user.get('role')
+    if current_user_role != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+
+    users = users_collection.find()
     
+    # Convert the users to a list and then to a format that can be JSON serialized
+    users_list = []
+    for user in users:
+        user['_id'] = str(user['_id'])  # Convert ObjectId to string for JSON serialization
+        user.pop('password', None)  # It's a good practice to remove sensitive information
+        users_list.append(user)
+    
+    return jsonify(users_list), 200
+
+# show all GPs 
+@app.route('/gps', methods=['GET'])
+@jwt_required  
+def get_all_gps():
+    current_user_role = request.current_user.get('role')
+    if current_user_role != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+
+    gps = GPS_collection.find()
+
+    # Convert the GPs to a list and format for JSON serialization
+    gps_list = []
+    for gp in gps:
+        gp['_id'] = str(gp['_id'])  # Convert ObjectId to string for JSON serialization
+        gp.pop('password', None)  # Remove sensitive information before sending it to the client
+        gps_list.append(gp)
+
+    return jsonify(gps_list), 200
+
 
 # Add an Item 
-    
+@app.route('/admin/add_item', methods=['POST'])
+@jwt_required
+def add_item():
+    # Check if the current user is an admin
+    if request.current_user.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+
+    data = request.json
+
+    # Validate the item data (you can expand this validation based on your requirements)
+    if not data.get('name') or not data.get('price') or not data.get('stock_quantity'):
+        return jsonify({"error": "Missing required item information"}), 400
+
+    # Prepare the item document for insertion
+    item_document = {
+        "name": data.get('name'),
+        "item_image": data.get('item_image', 'default.png'),  # default image if not provided
+        "category": data.get('category', 'Unknown'),  # default category if not provided
+        "description": data.get('description', ''),
+        "price": data.get('price'),
+        "stock_quantity": data.get('stock_quantity'),
+        "item_reviews": []  # Initialize with an empty list of reviews
+    }
+
+    # Insert the new item into the database
+    result = items_collection.insert_one(item_document)
+
+    # Check if the item was successfully inserted
+    if result.inserted_id:
+        return jsonify({"message": "Item added successfully", "item_id": str(result.inserted_id)}), 201
+    else:
+        return jsonify({"error": "Failed to add the item"}), 500
 
 # Edit an Item 
-    
+@app.route('/admin/edit_item/<item_id>', methods=['PUT'])
+@jwt_required
+def edit_item(item_id):
+    # Check if the current user is an admin
+    if request.current_user.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+
+    try:
+        # Convert the item_id to ObjectId
+        object_id = ObjectId(item_id)
+    except:
+        return jsonify({"error": "Invalid item ID format"}), 400
+
+    data = request.json
+
+    # Create update object
+    update_data = {}
+    for field in ['name', 'item_image', 'category', 'description', 'price', 'stock_quantity']:
+        if field in data:
+            update_data[field] = data[field]
+
+    if not update_data:
+        return jsonify({"error": "No update data provided"}), 400
+
+    # Update the item in the database
+    result = items_collection.update_one({'_id': object_id}, {'$set': update_data})
+
+    if result.matched_count:
+        return jsonify({"message": "Item updated successfully"}), 200
+    else:
+        return jsonify({"error": "Item not found"}), 404
+
 
 # Delete an Item 
+@app.route('/admin/delete_item/<item_id>', methods=['DELETE'])
+@jwt_required
+def delete_item(item_id):
+    # Check if the current user is an admin
+    if request.current_user.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+
+    try:
+        # Convert the item_id to ObjectId
+        object_id = ObjectId(item_id)
+    except:
+        return jsonify({"error": "Invalid item ID format"}), 400
+
+    # Delete the item from the database
+    result = items_collection.delete_one({'_id': object_id})
+
+    if result.deleted_count:
+        return jsonify({"message": "Item deleted successfully"}), 200
+    else:
+        return jsonify({"error": "Item not found"}), 404
 
    
 # Add a GP 
-    
+@app.route('/admin/add_gp', methods=['POST'])
+@jwt_required
+def add_gp():
+    if request.current_user.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+
+    data = request.json
+    hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+
+    new_gp = {
+        "name": data.get('name'),
+        "specialisation": data.get('specialisation'),
+        "contactNumber": data.get('contactNumber'),
+        "medicalNumbers": data.get('medicalNumbers', []),
+        "email": data.get('email'),
+        "password": hashed_password,
+        "role": "GP"
+    }
+
+    GPS_collection.insert_one(new_gp)
+    return jsonify({"message": "GP added successfully"}), 201
+
 
 # Edit a GP's Info
+@app.route('/admin/edit_gp/<gp_id>', methods=['PUT'])
+@jwt_required
+def edit_gp(gp_id):
+    if request.current_user.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
     
+    try:
+        gp_id = ObjectId(gp_id)
+    except:
+        return jsonify({"error": "Invalid GP ID format"}), 400
+
+    data = request.json
+    update_data = {}
+
+    for field in ['name', 'specialisation', 'contactNumber', 'medicalNumbers', 'email']:
+        if field in data:
+            update_data[field] = data[field]
+
+    if not update_data:
+        return jsonify({"error": "No update data provided"}), 400
+
+    result = GPS_collection.update_one({'_id': gp_id}, {'$set': update_data})
+
+    if result.matched_count:
+        return jsonify({"message": "GP updated successfully"}), 200
+    else:
+        return jsonify({"error": "GP not found"}), 404
 
 # Delete a GP
+@app.route('/admin/delete_gp/<gp_id>', methods=['DELETE'])
+@jwt_required
+def delete_gp(gp_id):
+    if request.current_user.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+    
+    try:
+        gp_id = ObjectId(gp_id)
+    except:
+        return jsonify({"error": "Invalid GP ID format"}), 400
+
+    result = GPS_collection.delete_one({'_id': gp_id})
+
+    if result.deleted_count:
+        return jsonify({"message": "GP deleted successfully"}), 200
+    else:
+        return jsonify({"error": "GP not found"}), 404
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
