@@ -38,9 +38,4 @@ export class ApiService {
     return throwError(() => error);
   }
 
-
-
- 
-
-
 }

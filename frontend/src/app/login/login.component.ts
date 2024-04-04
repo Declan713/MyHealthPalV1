@@ -38,7 +38,22 @@ export class LoginComponent {
         next: (response: any) => {
           console.log('Login Successful:', response);
           localStorage.setItem('token', response.token);
-          this.router.navigate(['/home']);
+          switch(response.role) {
+            case 'admin':
+              this.router.navigate(['/adminHome']);
+              break;
+            case 'user':
+              this.router.navigate(['/home']);
+              break;
+            case 'GP':
+              this.router.navigate(['/gpHome']);
+              break;
+            default:
+              this.errorMessage = 'Role not recognised, contact support.';
+              this.isLoading = false;
+              this.loginForm.enable();
+              return;
+          }
         },
         error: (error: HttpErrorResponse) => {
           
