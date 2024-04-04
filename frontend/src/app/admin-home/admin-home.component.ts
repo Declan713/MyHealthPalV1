@@ -7,9 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AdminHomeComponent {
 
-  constructor() { }
 
-  ngOnInit(): void {
-  }
-
+  
 }

@@ -43,18 +43,18 @@ def decode_token(token):
 def jwt_required(func):
     @wraps(func)
     def jwt_required_wrapper(*args, **kwargs):
-        token = request.headers.get('Authorization')
-
-        if token:
+        auth_header = request.headers.get('Authorization')
+        if auth_header and auth_header.startswith('Bearer '):
+            token = auth_header.split(" ")[1]
             decoded_token = decode_token(token)
-
+            
             if 'error' not in decoded_token:
                 request.current_user = decoded_token
                 return func(*args, **kwargs)
-
         return jsonify({'message': 'Unauthorized access'}), 401
 
     return jwt_required_wrapper
+
 
 
 # Login Route
@@ -82,8 +82,7 @@ def login():
 @app.route('/logout', methods=['POST'])
 @jwt_required
 def logout():
-    # Instruct the client to remove the token from storage
-    return jsonify({"message": "Logged out successfully. Please remove the token from your storage."}), 200
+    return jsonify({"message": "Logged out successfully. Removed the token from your storage."}), 200
 
 
 # Register New Account

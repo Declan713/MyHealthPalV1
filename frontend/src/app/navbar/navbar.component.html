@@ -1,0 +1,41 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/">MyHealthPal</a>
+  </div>
+  <div class="menu-toggle" (click)="toggleMenu()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+  <div class="navbar-links" [class.active]="menuOpen">
+
+    <!-- Display these links if the user is an admin -->
+    <ng-container *ngIf="isLoggedIn() && isAdmin()">
+      <a routerLink="/all-users">All Users</a>
+      <a routerLink="/all-gps">All GPs</a>
+      <a routerLink="/admin-functions">Admin Functions</a>
+    </ng-container>
+
+    <!-- Display these links if the user is logged in -->
+    <ng-container *ngIf="isLoggedIn() && isUser()">
+      <a routerLink="/book-appointment">Book Appointment</a>
+      <a routerLink="/view-appointments">Appointments</a>
+      <a routerLink="/shop">shop</a>
+      <a routerLink="/basket">Basket</a>
+    </ng-container>
+
+    <ng-container *ngIf="isLoggedIn() && isGP()">
+      <a routerLink="/gp-appointments">Appointments</a>
+      <a routerLink="/all-patients">Patients</a>
+    </ng-container>
+
+    <ng-container *ngIf="!isLoggedIn()">
+      <a routerLink="/register">Register</a>
+    </ng-container>
+
+    <ng-container *ngIf="isLoggedIn()">
+      <a routerLink="/account">Account</a>
+      <button (click)="onLogout()">Logout</button>
+    </ng-container>
+  </div>
+</nav>

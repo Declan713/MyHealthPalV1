@@ -6,13 +6,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms'; 
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component'; 
+import { LoginComponent } from './login/login.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent 
+    LoginComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,

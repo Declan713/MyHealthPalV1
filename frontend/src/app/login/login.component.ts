@@ -37,7 +37,9 @@ export class LoginComponent {
       this.authService.login(credentials.email, credentials.password).subscribe({
         next: (response: any) => {
           console.log('Login Successful:', response);
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('currentUserToken', JSON.stringify(response));
+          this.authService.setLoggedInUser(response);
+          
           switch(response.role) {
             case 'admin':
               this.router.navigate(['/adminHome']);

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-
+import { map, catchError, tap } from 'rxjs/operators';
 
 export interface AuthResponse {
-  access_token: string;
+  token: string; // Updated to match response
   name?: string;
   role?: string;
 }
@@ -17,72 +16,79 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<AuthResponse | null>;
   public currentUser: Observable<AuthResponse | null>;
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
-  isLoggedIn$ = this.isLoggedInSubject.asObservable();
+  public isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-
-  private BASE_URL = 'http://127.0.0.1:5000'; 
+  private BASE_URL = 'http://127.0.0.1:5000';
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<AuthResponse | null>(this.loadUserFromStorage());
     this.currentUser = this.currentUserSubject.asObservable();
-    this.isLoggedInSubject.next(!!this.currentUserSubject.value);
+    this.isLoggedInSubject.next(this.isValidUser(this.currentUserSubject.value));
   }
 
   public get currentUserValue(): AuthResponse | null {
     return this.currentUserSubject.value;
   }
 
-  private loadUserFromStorage(): AuthResponse | null {
-    const currentUserFromStorage = localStorage.getItem('currentUser');
-    return currentUserFromStorage ? JSON.parse(currentUserFromStorage) : null;
+  setLoggedInUser(user: AuthResponse): void {
+    this.currentUserSubject.next(user);
+    this.isLoggedInSubject.next(true);
   }
 
-  login(email: string = '', password: string = ''): Observable<AuthResponse> {
-    const body = { email, password };  
-  
-    return this.http.post<any>(`${this.BASE_URL}/login`, body)
+  private isValidUser(user: AuthResponse | null): boolean {
+    return !!user && !!user.token;
+  }
+
+  private loadUserFromStorage(): AuthResponse | null {
+    const currentUserToken = localStorage.getItem('currentUserToken');
+    return currentUserToken ? JSON.parse(currentUserToken) : null;
+  }
+
+  login(email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.BASE_URL}/login`, { email, password })
       .pipe(
         map(response => {
-          if (typeof response === 'string') {
-            throw new Error(response);
-          }
-  
-          const authResponse: AuthResponse = {
-            access_token: response.token,
-            role: response.role
-          };
-  
-          localStorage.setItem('currentUser', JSON.stringify(authResponse));
-          this.currentUserSubject.next(authResponse);
-          this.isLoggedInSubject.next(true);
-          if (authResponse.role) {
-            
-          }
-          return authResponse;
+          localStorage.setItem('currentUserToken', JSON.stringify(response));
+          this.setLoggedInUser(response);
+          return response;
         }),
+        catchError(error => throwError(() => error))
+      );
+  }
+
+  logout(): Observable<any> {
+    const token = this.getToken();
+    if (!token) {
+      this.clearLocalUserData();
+      return throwError(() => new Error('Authentication token not found'));
+    }
+
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    return this.http.post(`${this.BASE_URL}/logout`, {}, { headers })
+      .pipe(
+        tap(() => this.clearLocalUserData()),
         catchError(this.handleError)
       );
   }
 
+  clearLocalUserData(): void {
+    localStorage.removeItem('currentUserToken');
+    this.currentUserSubject.next(null);
+    this.isLoggedInSubject.next(false);
+  }
+
   public getToken(): string | null {
-    const currentUser = this.loadUserFromStorage();
-    return currentUser ? currentUser.access_token : null;
+    const currentUser = this.currentUserSubject.value;
+    return currentUser ? currentUser.token : null;
   }
 
   register(userData: any): Observable<any> {
     return this.http.post(`${this.BASE_URL}/register`, userData)
-      .pipe(
-        catchError(this.handleError)
-      );
+      .pipe(catchError(this.handleError));
   }
-
-  
 
   private handleError(error: any) {
     console.error('Authentication failed:', error);
     return throwError(() => error);
   }
 }
-
- 
-
