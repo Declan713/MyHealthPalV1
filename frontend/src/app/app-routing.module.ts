@@ -4,15 +4,16 @@ import { AuthGuard } from './auth.guard';
 import { RoleGuard } from "./role.guard";
 
 import { LoginComponent } from './login/login.component';
-import { HomeComponent } from "./home/home.component";
+
+
 import { AdminHomeComponent } from "./admin-home/admin-home.component";
-import { GPHomeComponent } from "./gphome/gphome.component";
 import { AdminFeaturesComponent } from "./admin-features/admin-features.component";
 import { AllUsersComponent } from './all-users/all-users.component';
+import { AllGpsComponent } from './all-gps/all-gps.component';
 
+import { GPHomeComponent } from "./gphome/gphome.component";
 
-
-
+import { HomeComponent } from "./home/home.component";
 
 
 
@@ -25,6 +26,8 @@ export const routes: Routes = [
 
     { path: 'adminFeatures', component: AdminFeaturesComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole:'admin'}},
     { path: 'all-users', component: AllUsersComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
+    { path: 'all-gps', component: AllGpsComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
+    
 
 
   

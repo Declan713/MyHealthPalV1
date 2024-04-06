@@ -9,7 +9,11 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AdminFeaturesComponent } from './admin-features/admin-features.component';
+import { AllUsersComponent } from './all-users/all-users.component'; 
+import { AllGpsComponent } from './all-gps/all-gps.component';
 
+import { EditUserModalComponent } from './edit-user-modal/edit-user-modal.component';
+import { EditGpModalComponent } from './edit-gp-modal/edit-gp-modal.component';
 
 @NgModule({
   declarations: [
@@ -17,13 +21,17 @@ import { AdminFeaturesComponent } from './admin-features/admin-features.componen
     LoginComponent,
     NavbarComponent,
     AdminFeaturesComponent,
+    AllUsersComponent,
+    AllGpsComponent,
+    EditUserModalComponent,
+    EditGpModalComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule 
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

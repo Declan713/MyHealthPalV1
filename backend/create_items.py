@@ -17,7 +17,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 5,
                 "comment": "Leaves my teeth feeling exceptionally clean.",
@@ -35,7 +35,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4,
                 "comment": "Lovely addition to my relaxation routine.",
@@ -61,7 +61,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 3,
                 "comment": "Easy to use and provides reliable readings.",
@@ -88,7 +88,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4, 
                 "comment": "Helps alleviate anxiety and promotes deep sleep.",
@@ -114,7 +114,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 5,
                 "comment": "Tracks steps, heart rate, and more accurately.",
@@ -140,7 +140,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe", 
                 "rating": 4,
                 "comment": "Great taste and mixes well.",
@@ -166,7 +166,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe", 
                 "rating": 4,
                 "comment": "Helps reduce muscle soreness after workouts.",
@@ -192,7 +192,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4,
                 "comment": "Gives a good energy kick before workouts.",
@@ -218,7 +218,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4,
                 "comment": "Tastes amazing and good for on-the-go.",
@@ -244,7 +244,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4,
                 "comment": "Keeps me hydrated during long runs.",
@@ -270,7 +270,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4,
                 "comment": "Great combination of essential vitamins.",
@@ -296,7 +296,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4,
                 "comment": "Essential for those with limited sun exposure.",
@@ -322,7 +322,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4,
                 "comment": "High-quality source of omega-3 fatty acids.",
@@ -348,7 +348,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4,
                 "comment": "Improved digestion and immune system.",
@@ -374,7 +374,7 @@ items_list = [
         "item_reviews": [
             {
                 "review_id": ObjectId(),
-                "user_id": ObjectId("65cba52b3954240754d76bca"),
+                "user_id": ObjectId("6605dbf80a65430d9ec1bc7d"),
                 "name": "John Doe",
                 "rating": 4,
                 "comment": "Visible improvement in skin elasticity.",

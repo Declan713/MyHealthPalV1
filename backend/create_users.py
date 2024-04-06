@@ -9,6 +9,7 @@ users_list = [
         { 
             "name": "John Doe",
             "email": "john@example.com",
+            "avatar": "man.png",
             "password": b"john_NA",
             "medicalNumber": "ABC123",
             "basket": [],
@@ -19,6 +20,7 @@ users_list = [
         {
             "name": "Jane Smith",
             "email": "jane@example.com",
+            "avatar": "woman.png",
             "password": b"jane_password",
             "medicalNumber": "ABC456",
             "basket": [],
@@ -29,6 +31,7 @@ users_list = [
          {
             "name": "Declan Madden",
             "email": "DM@example.com",
+            "avatar": "admin.png",
             "password": b"Admin",
             "medicalNumber": "0000",
             "basket": [],

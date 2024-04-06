@@ -1,0 +1,35 @@
+<div class="edit-gp-modal">
+    <div class="modal-content">
+      <h2>Edit Gp</h2>
+      <form #editGpForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" [(ngModel)]="gp.name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" id="email" [(ngModel)]="gp.email" name="email" required> 
+        </div>
+        <div class="form-group">
+            <label for="specialisation">Specialisation</label>
+            <input type="text" id="specialisation" [(ngModel)]="gp.specialisation" name="specialisation" required>
+        </div>
+        <div class="form-group">
+            <label for="medicalNumbers">Medical Numbers</label>
+            <input type="text" id="medicalNumbers" [(ngModel)]="gp.medicalNumbers" name="medicalNumbers" required>
+        </div>
+        <div class="form-group">
+            <label for="contactNumber">Contact Number</label>
+            <input type="text" id="contactNumber" [(ngModel)]="gp.contactNumber" name="contactNumber" required>
+        </div>
+        <div class="form-group">
+          <label for="avatar">Icon</label>
+          <input type="text" id="avatar" [(ngModel)]="gp.avatar" name="avatar" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Save Changes</button>
+          <button type="button" (click)="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+</div>

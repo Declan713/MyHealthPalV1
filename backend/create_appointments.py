@@ -10,7 +10,7 @@ appointments_collection = db.appointments
 # Example appointments data
 appointments_list = [
     {
-        "userId": ObjectId("65cba52b3954240754d76bca"),  # Reference to the user's _id
+        "userId": ObjectId("6605dbf80a65430d9ec1bc7d"),  # Reference to the user's _id
         "gpId": ObjectId("65cba53e22b25df96440d622"),  # Reference to the GP's _id
         "userMedicalNumber": "ABC123",  # User's medical number
         "dateTime": datetime.datetime(2024, 2, 7, 10, 0, 0), # Fake date/time

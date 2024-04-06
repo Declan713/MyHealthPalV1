@@ -1,1 +1,22 @@
-<p>all-users works!</p>
+<div class="all-users-container">
+  <h1>Users</h1>
+  <p class="user-count">user count: {{ users.length }}</p>
+
+  <div *ngFor="let user of users" class="user-card">
+    <div class="user-icon">
+      <img *ngIf="user && user.avatar" [src]="'http://127.0.0.1:5000/static/icons/' + user.avatar" alt="User Icon">
+    </div>
+    <div class="user-info">
+      <p><strong>Name:</strong> {{ user.name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Medical Number:</strong> {{ user.medicalNumber }}</p>
+    </div>
+    <div class="user-actions">
+      <button class="edit" (click)="openEditModal(user)">Edit</button>
+      <button class="delete" (click)="deleteUser(user._id)">Delete</button>
+    </div>
+  </div>
+</div>
+
+
+<app-edit-user-modal *ngIf="showEditModal" [user]="selectedUser" (updateUser)="editUser($event)" (closeModalEvent)="showEditModal=false"></app-edit-user-modal>

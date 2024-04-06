@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from functools import wraps
 from pymongo import MongoClient
 from bson import ObjectId
@@ -105,11 +105,12 @@ def register():
     user_document = {
         "name": data['name'],
         "email": data['email'],
+        "avatar": "man.png",
         "password": hashed_password,
         "medicalNumber": data.get('medicalNumber', ''),  # Optional field
         "basket": [],
         "purchaseHistory": [],
-        "role": "user"  # Default role
+        "role": "user"
     }
 
     # Insert the new user into the database
@@ -120,6 +121,11 @@ def register():
         return jsonify({"message": "User registered successfully", "user_id": str(result.inserted_id)}), 201
     else:
         return jsonify({"error": "Registration failed"}), 500
+
+
+@app.route('/static/icons/<path:filename>')
+def serve_image(filename):
+    return send_from_directory('static/icons', filename)
 
 
 
@@ -628,17 +634,67 @@ def get_all_users():
     if current_user_role != 'admin':
         return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
 
-    users = users_collection.find()
-    
-    # Convert the users to a list and then to a format that can be JSON serialized
-    users_list = []
-    for user in users:
-        user['_id'] = str(user['_id'])  # Convert ObjectId to string for JSON serialization
-        user.pop('password', None)  # It's a good practice to remove sensitive information
-        users_list.append(user)
-    
-    return jsonify(users_list), 200
+    users = users_collection.find({}, {'password': 0, 'basket': 0})  # Exclude fields like password and basket
+    users_list = list(users)
 
+    # Convert MongoDB's ObjectId to string for JSON serialization
+    for user in users_list:
+        user['_id'] = str(user['_id'])
+
+    return jsonify(users_list)
+
+@app.route('/admin/edit_user/<user_id>', methods=['PUT'])
+@jwt_required
+def edit_user(user_id):
+    print(f"Editing User ID: {user_id}")
+    if request.current_user.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+
+    try:
+        user_id = ObjectId(user_id)
+    except:
+        return jsonify({"error": "Invalid user ID format"}), 400
+
+    data = request.json
+    update_data = {}
+    for field in ['name', 'email', 'medicalNumber', 'avatar']:
+        if field in data:
+            update_data[field] = data[field]
+
+    if not update_data:
+        return jsonify({"error": "No update data provided"}), 400
+
+    result = users_collection.update_one({'_id': user_id}, {'$set': update_data})
+
+    if result.matched_count:
+        return jsonify({"message": "User updated successfully"}), 200
+    else:
+        return jsonify({"error": "User not found"}), 404
+    
+
+@app.route('/admin/delete_user/<user_id>', methods=['DELETE'])
+@jwt_required
+def delete_user(user_id):
+    print(f"Deleting User ID: {user_id}")
+    if request.current_user.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+    
+    try:
+        user_id = ObjectId(user_id)
+    except:
+        return jsonify({"error": "Invalid user ID format"}), 400
+
+    result = users_collection.delete_one({'_id': user_id})
+
+    if result.deleted_count:
+        return jsonify({"message": "User deleted successfully"}), 200
+    else:
+        return jsonify({"error": "User not found"}), 404
+
+
+
+
+  
 # show all GPs 
 @app.route('/gps', methods=['GET'])
 @jwt_required  
@@ -652,8 +708,8 @@ def get_all_gps():
     # Convert the GPs to a list and format for JSON serialization
     gps_list = []
     for gp in gps:
-        gp['_id'] = str(gp['_id'])  # Convert ObjectId to string for JSON serialization
-        gp.pop('password', None)  # Remove sensitive information before sending it to the client
+        gp['_id'] = str(gp['_id'])  
+        gp.pop('password', None)  
         gps_list.append(gp)
 
     return jsonify(gps_list), 200
@@ -778,6 +834,7 @@ def add_gp():
 @app.route('/admin/edit_gp/<gp_id>', methods=['PUT'])
 @jwt_required
 def edit_gp(gp_id):
+    print(f"Editing GP ID: {gp_id}")
     if request.current_user.get('role') != 'admin':
         return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
     
