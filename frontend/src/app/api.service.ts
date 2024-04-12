@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { catchError, tap } from 'rxjs';
 import { Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -20,6 +19,23 @@ export class ApiService {
       'Authorization': `Bearer ${token}`
     });
   }
+
+  ///Routes////
+
+  // Get all items
+  getAllItems(page: number, pageSize: number = 10): Observable<any> {
+    return this.http.get(`${this.apiUrl}/items?pn=${page}&ps=${pageSize}`, { headers: this.getHeaders() });
+  }
+
+
+  // Get one item
+  getItem(itemId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/items/${itemId}`, { headers: this.getHeaders() });
+  }
+
+
+  ///////////////////////////////////////
+  //////////Admin Routes/////////
 
   // Fetch all users
   getAllUsers(): Observable<any> {
@@ -45,6 +61,23 @@ export class ApiService {
   editGp(gpId: string, gpData: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/admin/edit_gp/${gpId}`, gpData, { headers: this.getHeaders() });
   }
+
+  // Delete a GP 
+  deleteGp(gpId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/admin/delete_gp/${gpId}`, { headers: this.getHeaders() });
+  }
+
+   // Add a GP
+   addGp(gpData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/admin/add_gp`, gpData, { headers: this.getHeaders() });
+  }
+
+  // View Admin Account
+  getAdminProfile(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/admin/profile`, { headers: this.getHeaders() });
+  }
+
+
 
 
  

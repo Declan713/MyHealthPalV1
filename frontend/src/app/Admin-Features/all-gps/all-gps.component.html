@@ -1,6 +1,6 @@
-<div class="all-gp-container">
+<div class="all-gps-container">
   <h1>General Practitioner</h1>
-  <p class="user-count">GP count: {{ gps.length }}</p>
+  <p class="gp-count">GP count: {{ gps.length }}</p>
 
   <div *ngFor="let gp of gps" class="gp-card">
     <div class="gp-icon">
@@ -15,8 +15,11 @@
     </div>
     <div class="gp-actions">
       <button class="edit" (click)="openEditModal(gp)">Edit</button>
-      <!-- <button class="delete" (click)="deleteGp(gp._id)">Delete</button> -->
+      <button class="delete" (click)="deleteGp(gp._id)">Delete</button>
     </div>
+  </div>
+  <div class="gp-action">
+    <button class="add-gp">Create a New GP</button>
   </div>
 </div>
 

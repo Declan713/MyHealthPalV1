@@ -1,0 +1,47 @@
+/* Styling for the main container */
+.account-container {
+    max-width: 700px;
+    margin: 10px auto;
+    padding: 20px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: #75efd3; 
+    color: #ffffff; 
+}
+
+
+/* Styling for the welcome message */
+h2 {
+    color: #ffff;
+    border-bottom: 1px solid #000000;
+}
+    
+/* Styling for account details */
+p {
+    margin: 10px 0;
+}
+
+.user-icon img {
+    width: 81px; 
+    height: 81px;
+    margin-right: 73px;
+    border: 1px solid #000000;
+    border-radius: 40px;
+}
+    
+    
+.account-details {
+    margin-bottom: 20px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #c3fbf2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.account-details:hover {
+    background-color: #2f8572;
+}
+    

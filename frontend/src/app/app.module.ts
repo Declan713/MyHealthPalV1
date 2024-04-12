@@ -8,21 +8,25 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { AdminFeaturesComponent } from './admin-features/admin-features.component';
-import { AllUsersComponent } from './all-users/all-users.component'; 
-import { AllGpsComponent } from './all-gps/all-gps.component';
 
-import { EditUserModalComponent } from './edit-user-modal/edit-user-modal.component';
-import { EditGpModalComponent } from './edit-gp-modal/edit-gp-modal.component';
+import { AllUsersComponent } from './Admin-Features/all-users/all-users.component'; 
+import { AllGpsComponent } from './Admin-Features/all-gps/all-gps.component';
+import { AllItemsComponent } from './Admin-Features/all-items/all-items.component';
+
+import { AdminProfileComponent } from "./Profiles/admin-profile/admin-profile.component";
+
+import { EditUserModalComponent } from './Pop-up_Modals/edit-user-modal/edit-user-modal.component';
+import { EditGpModalComponent } from './Pop-up_Modals/edit-gp-modal/edit-gp-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NavbarComponent,
-    AdminFeaturesComponent,
     AllUsersComponent,
     AllGpsComponent,
+    AllItemsComponent,
+    AdminProfileComponent,
     EditUserModalComponent,
     EditGpModalComponent,
   ],

@@ -1,6 +1,6 @@
 <nav class="navbar">
   <div class="navbar-brand">
-    <a routerLink="/">MyHealthPal</a>
+    <a [routerLink]="getHomeRoute()">MyHealthPal</a>
   </div>
   <div class="menu-toggle" (click)="toggleMenu()">
     <div class="bar"></div>
@@ -13,7 +13,8 @@
     <ng-container *ngIf="isLoggedIn() && isAdmin()">
       <a routerLink="/all-users">All Users</a>
       <a routerLink="/all-gps">All GPs</a>
-      <a routerLink="/admin-functions">Admin Functions</a>
+      <a routerLink="/item-functions">Item Functions</a>
+      <a routerLink="/admin-profile">Admin Account</a>
     </ng-container>
 
     <!-- Display these links if the user is logged in -->
@@ -22,11 +23,13 @@
       <a routerLink="/view-appointments">Appointments</a>
       <a routerLink="/shop">shop</a>
       <a routerLink="/basket">Basket</a>
+      <a routerLink="/user-profile">Account</a>
     </ng-container>
 
     <ng-container *ngIf="isLoggedIn() && isGP()">
       <a routerLink="/gp-appointments">Appointments</a>
       <a routerLink="/all-patients">Patients</a>
+      <a routerLink="/gp-profile">Account</a>
     </ng-container>
 
     <ng-container *ngIf="!isLoggedIn()">
@@ -34,7 +37,6 @@
     </ng-container>
 
     <ng-container *ngIf="isLoggedIn()">
-      <a routerLink="/account">Account</a>
       <button (click)="onLogout()">Logout</button>
     </ng-container>
   </div>

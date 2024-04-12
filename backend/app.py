@@ -127,18 +127,26 @@ def register():
 def serve_image(filename):
     return send_from_directory('static/icons', filename)
 
-
+@app.route('/static/item_images/<path:filename>')
+def serve_item_image(filename):
+    return send_from_directory('static/item_images', filename)
 
 # Show all items
 @app.route('/items', methods=['GET'])
 def get_all_items():
-    # Find all items in the collection
-    items = items_collection.find()
+    page_num = int(request.args.get('pn', 1))
+    page_size = int(request.args.get('ps', 10))
+    page_start = (page_size * (page_num - 1))
+
+    items_list = []
+    items = items_collection.find().skip(page_start).limit(page_size)
     
     # Convert the items to a list and then to a format that can be JSON serialized
-    items_list = []
     for item in items:
-        item['_id'] = str(item['_id'])  # Convert ObjectId to string for JSON serialization
+        item['_id'] = str(item['_id'])
+        for review in item["item_reviews"]:
+            review["user_id"] = str(review["user_id"])
+            review["review_id"] = str(review["review_id"])
         items_list.append(item)
     
     return jsonify(items_list), 200
@@ -624,6 +632,27 @@ def get_user_appointments(user_id):
 
 ########################################################################################################
 ###########################(Admin Feature)##############################################################
+
+# View Admin Account/Show Profile
+@app.route('/admin/profile', methods=['GET'])
+@jwt_required
+def view_admin_profile():
+    # Ensure the user requesting the profile is an admin
+    if request.current_user.get('role') != 'admin':
+        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+
+    admin_id = ObjectId(request.current_user['user_id'])
+    admin = users_collection.find_one({'_id': admin_id})
+
+    if admin:
+        admin['_id'] = str(admin['_id'])
+
+        admin.pop('password', None)
+
+        return jsonify(admin), 200
+    else:
+        return jsonify({"error": "Admin not found"}), 404
+
 
 # Show all Users
 @app.route('/admin/users', methods=['GET'])

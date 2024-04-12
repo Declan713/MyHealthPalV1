@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../api.service';
+import { ApiService } from '../../api.service';
 
 @Component({
   selector: 'app-all-gps',
@@ -44,7 +44,19 @@ export class AllGpsComponent implements OnInit {
         console.error('Error updating GP:', error);
       }
     });
-}
+  }
+
+  deleteGp(gpId: string) {
+    if(confirm('Are you sure you want to delete this GP?')) {
+      this.apiService.deleteGp(gpId).subscribe({
+        next: (response) => {
+          console.log('GP deleted', response);
+          this.gps = this.gps.filter(gp => gp._id !== gpId);
+        },
+        error: (error) => console.error('Error deleting GP:', error)
+      });
+    }
+  }
 
 
 

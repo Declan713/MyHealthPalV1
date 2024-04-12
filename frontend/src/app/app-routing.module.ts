@@ -6,14 +6,18 @@ import { RoleGuard } from "./role.guard";
 import { LoginComponent } from './login/login.component';
 
 
-import { AdminHomeComponent } from "./admin-home/admin-home.component";
-import { AdminFeaturesComponent } from "./admin-features/admin-features.component";
-import { AllUsersComponent } from './all-users/all-users.component';
-import { AllGpsComponent } from './all-gps/all-gps.component';
+import { AdminHomeComponent } from "./Homes/admin-home/admin-home.component";
 
-import { GPHomeComponent } from "./gphome/gphome.component";
+import { AllUsersComponent } from './Admin-Features/all-users/all-users.component';
+import { AllGpsComponent } from './Admin-Features/all-gps/all-gps.component';
+import { AdminProfileComponent } from "./Profiles/admin-profile/admin-profile.component";
 
-import { HomeComponent } from "./home/home.component";
+import { GPHomeComponent } from "./Homes/gp-home/gp-home.component";
+import { GpProfileComponent } from "./Profiles/gp-profile/gp-profile.component";
+
+import { HomeComponent } from "./Homes/user-home/user-home.component";
+import { UserProfileComponent } from "./Profiles/user-profile/user-profile.component";
+import { AllItemsComponent } from "./Admin-Features/all-items/all-items.component";
 
 
 
@@ -24,10 +28,16 @@ export const routes: Routes = [
     { path: 'adminHome', component: AdminHomeComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole:'admin'}},
     { path: 'gpHome', component: GPHomeComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole:'GP'}},
 
-    { path: 'adminFeatures', component: AdminFeaturesComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole:'admin'}},
+    
     { path: 'all-users', component: AllUsersComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
     { path: 'all-gps', component: AllGpsComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
-    
+    { path: 'admin-profile', component: AdminProfileComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
+    { path: 'item-functions', component: AllItemsComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
+
+
+    { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
+
+    {path: 'gp-profile', component: GpProfileComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}}
 
 
   

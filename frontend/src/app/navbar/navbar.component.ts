@@ -39,6 +39,27 @@ export class NavbarComponent implements OnInit {
     return loggedIn;
   }
 
+  getHomeRoute(): string {
+    if (!this.isLoggedIn()) {
+      return '/login';
+    }
+    const currentUser = this.authService.currentUserValue;
+    if (currentUser) {
+      switch (currentUser.role) {
+        case 'admin':
+          return '/adminHome';
+        case 'user':
+          return '/home';
+        case 'GP':
+          return '/gpHome';
+        default:
+          return '/login'; 
+      }
+    }
+    return '/login';
+  }
+
+
   onLogout() {
     this.authService.logout().subscribe({
       next: (response) => {
