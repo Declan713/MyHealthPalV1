@@ -12,6 +12,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AllUsersComponent } from './Admin-Features/all-users/all-users.component'; 
 import { AllGpsComponent } from './Admin-Features/all-gps/all-gps.component';
 import { AllItemsComponent } from './Admin-Features/all-items/all-items.component';
+import { ViewItemComponent } from './Admin-Features/view-item/view-item.component';
 
 import { AdminProfileComponent } from "./Profiles/admin-profile/admin-profile.component";
 
@@ -26,6 +27,7 @@ import { EditGpModalComponent } from './Pop-up_Modals/edit-gp-modal/edit-gp-moda
     AllUsersComponent,
     AllGpsComponent,
     AllItemsComponent,
+    ViewItemComponent,
     AdminProfileComponent,
     EditUserModalComponent,
     EditGpModalComponent,

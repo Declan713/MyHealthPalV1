@@ -23,7 +23,7 @@ export class ApiService {
   ///Routes////
 
   // Get all items
-  getAllItems(page: number, pageSize: number = 10): Observable<any> {
+  getAllItems(page: number, pageSize: number = 12): Observable<any> {
     return this.http.get(`${this.apiUrl}/items?pn=${page}&ps=${pageSize}`, { headers: this.getHeaders() });
   }
 
@@ -31,6 +31,11 @@ export class ApiService {
   // Get one item
   getItem(itemId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/items/${itemId}`, { headers: this.getHeaders() });
+  }
+
+  // Delete item review
+  deleteReview(itemId: string, reviewId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/items/${itemId}/reviews/${reviewId}`, { headers: this.getHeaders() });
   }
 
 

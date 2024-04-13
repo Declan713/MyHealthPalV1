@@ -135,7 +135,7 @@ def serve_item_image(filename):
 @app.route('/items', methods=['GET'])
 def get_all_items():
     page_num = int(request.args.get('pn', 1))
-    page_size = int(request.args.get('ps', 10))
+    page_size = int(request.args.get('ps', 12))
     page_start = (page_size * (page_num - 1))
 
     items_list = []
@@ -151,8 +151,7 @@ def get_all_items():
     
     return jsonify(items_list), 200
 
-    
-# Show one item
+# show one item
 @app.route('/items/<item_id>', methods=['GET'])
 def get_item(item_id):
     try:
@@ -169,9 +168,18 @@ def get_item(item_id):
         # Convert ObjectId to string for JSON serialization
         item['_id'] = str(item['_id'])
         
+        # Convert any ObjectId fields in item_reviews to strings
+        if 'item_reviews' in item:
+            for review in item['item_reviews']:
+                if 'user_id' in review:
+                    review['user_id'] = str(review['user_id'])
+                if 'review_id' in review:
+                    review['review_id'] = str(review['review_id'])
+        
         return jsonify(item), 200
     else:
         return jsonify({"error": "Item not found"}), 404
+
 
 
 # Search for item
@@ -493,7 +501,6 @@ def delete_review(item_id, review_id):
     # Get review ID from the URL parameter
     review_id = ObjectId(review_id)
 
-    # Find the item in the database
     item = items_collection.find_one({'_id': item_id})
     if item:
         # Find the review in the item's reviews array

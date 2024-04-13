@@ -18,6 +18,7 @@ import { GpProfileComponent } from "./Profiles/gp-profile/gp-profile.component";
 import { HomeComponent } from "./Homes/user-home/user-home.component";
 import { UserProfileComponent } from "./Profiles/user-profile/user-profile.component";
 import { AllItemsComponent } from "./Admin-Features/all-items/all-items.component";
+import { ViewItemComponent } from "./Admin-Features/view-item/view-item.component";
 
 
 
@@ -33,6 +34,7 @@ export const routes: Routes = [
     { path: 'all-gps', component: AllGpsComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
     { path: 'admin-profile', component: AdminProfileComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
     { path: 'item-functions', component: AllItemsComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
+    { path: 'item/:id', component: ViewItemComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
 
 
     { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},

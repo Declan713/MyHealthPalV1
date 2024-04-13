@@ -25,7 +25,7 @@ export class AllItemsComponent implements OnInit {
       next: (data) => {
         this.items = data;
 
-        const itemsPerPage = 10
+        const itemsPerPage = 12
 
         this.hasMoreData = data.length === itemsPerPage
       },
