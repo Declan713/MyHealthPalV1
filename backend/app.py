@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, send_from_directory
 from functools import wraps
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING, DESCENDING
 from bson import ObjectId
 from flask_cors import CORS
 import bcrypt
@@ -136,10 +136,11 @@ def serve_item_image(filename):
 def get_all_items():
     page_num = int(request.args.get('pn', 1))
     page_size = int(request.args.get('ps', 12))
-    page_start = (page_size * (page_num - 1))
+    sort_order = request.args.get('sort', 'name')
+    sort_direction = ASCENDING if request.args.get('dir', 'asc') == 'asc' else DESCENDING
 
     items_list = []
-    items = items_collection.find().skip(page_start).limit(page_size)
+    items = items_collection.find().sort(sort_order, sort_direction).skip(page_size * (page_num - 1)).limit(page_size)
     
     # Convert the items to a list and then to a format that can be JSON serialized
     for item in items:

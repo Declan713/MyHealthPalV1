@@ -23,8 +23,14 @@ export class ApiService {
   ///Routes////
 
   // Get all items
-  getAllItems(page: number, pageSize: number = 12): Observable<any> {
-    return this.http.get(`${this.apiUrl}/items?pn=${page}&ps=${pageSize}`, { headers: this.getHeaders() });
+  getAllItems(page: number, pageSize: number = 12, sort: string = 'name', dir: string = 'asc'): Observable<any> {
+    let params = new HttpParams()
+      .set('pn', page.toString())
+      .set('ps', pageSize.toString())
+      .set('sort', sort)
+      .set('dir', dir);
+  
+    return this.http.get(`${this.apiUrl}/items`, { headers: this.getHeaders(), params: params });
   }
 
 
@@ -82,6 +88,15 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/admin/profile`, { headers: this.getHeaders() });
   }
 
+  // Add New Item
+  addItem(itemData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/admin/add_item`, itemData, { headers: this.getHeaders() });
+  }
+
+  // Delete a Item
+  deleteItem(itemId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/admin/delete_item/${itemId}`, { headers: this.getHeaders() });
+  }
 
 
 

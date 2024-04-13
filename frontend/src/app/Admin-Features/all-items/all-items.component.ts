@@ -4,54 +4,93 @@ import { ApiService } from '../../api.service';
 @Component({
   selector: 'app-all-items',
   templateUrl: './all-items.component.html',
-  styleUrl: './all-items.component.css'
+  styleUrls: ['./all-items.component.css']
 })
 export class AllItemsComponent implements OnInit {
-  items: any[] = []
+  items: any[] = [];
   page: number = 1;
-  hasMoreData: boolean = true; 
+  hasMoreData: boolean = true;
+  sortDirection: 'asc' | 'desc' = 'asc';
+  showAddItemModal = false; 
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    if (sessionStorage['page']) {
-      this.page = Number(sessionStorage['page'])
-    }
-    this.loadItems();  
+    this.loadItems();
   }
 
   loadItems() {
-    this.apiService.getAllItems(this.page).subscribe({
+    this.apiService.getAllItems(this.page, 12, 'name', this.sortDirection).subscribe({
       next: (data) => {
         this.items = data;
-
-        const itemsPerPage = 12
-
-        this.hasMoreData = data.length === itemsPerPage
+        this.hasMoreData = data.length === 12;
+        console.log(data)
       },
-      error: (error) => {
-        console.error('Failed to fetch items:', error);
-      }
+      error: (error) => console.error('Failed to fetch items:', error)
     });
+  }
+
+  sortItemsAlphabetically() {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.loadItems();
   }
 
   previousPage() {
     if (this.page > 1) {
-      this.page = this.page - 1;
-      sessionStorage['page'] = this.page;
+      this.page--;
+      sessionStorage.setItem('page', this.page.toString());
       this.loadItems();
     }
   }
 
   nextPage() {
-    this.page = this.page + 1;
-    sessionStorage['page'] = this.page;
-    this.loadItems();
+    if (this.hasMoreData) {
+      this.page++;
+      sessionStorage.setItem('page', this.page.toString());
+      this.loadItems();
+    }
   }
 
   canGoNext(): boolean {
     return this.hasMoreData;
   }
 
+  openAddItemModal() {
+    console.log('Opening add item modal...');
+    this.showAddItemModal = true;
+    console.log('Modal state:', this.showAddItemModal);
+  }
+  
+  addItem(newItem: any) {
+    console.log('Adding item:', newItem);
+    this.apiService.addItem(newItem).subscribe({
+      next: (response) => {
+        console.log('Item added', response);
+        this.showAddItemModal = false;
+        this.loadItems();
+      },
+      error: (error) => {
+        console.error('Error adding item:', error);
+        this.showAddItemModal = false;
+      }
+    });
+  }
+
+  deleteItem(itemId: string) {
+    if (confirm('Are you sure you want to delete this item?')) {
+      this.apiService.deleteItem(itemId).subscribe({
+        next: (response) => {
+          console.log('Item deleted successfully:', response);
+          this.items = this.items.filter(item => item._id !== itemId);
+        },
+        error: (error) => {
+          console.error('Error deleting item:', error);
+        }
+      });
+    }
+  }
+  
+
+  
 
 }

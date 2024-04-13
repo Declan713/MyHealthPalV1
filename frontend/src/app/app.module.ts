@@ -18,6 +18,7 @@ import { AdminProfileComponent } from "./Profiles/admin-profile/admin-profile.co
 
 import { EditUserModalComponent } from './Pop-up_Modals/edit-user-modal/edit-user-modal.component';
 import { EditGpModalComponent } from './Pop-up_Modals/edit-gp-modal/edit-gp-modal.component';
+import { AddItemModalComponent } from './Pop-up_Modals/add-item-modal/add-item-modal.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { EditGpModalComponent } from './Pop-up_Modals/edit-gp-modal/edit-gp-moda
     AdminProfileComponent,
     EditUserModalComponent,
     EditGpModalComponent,
+    AddItemModalComponent,
   ],
   imports: [
     BrowserModule,
