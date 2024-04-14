@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +10,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  registerForm: FormGroup;
+  isActive = false; 
   isLoading = false;
   errorMessage: string = '';
+  regErrorMessage: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -20,23 +22,24 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
+    });
+    this.registerForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      medicalNumber: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(3)]],
     });
   }
 
   onSubmit() {
-    if (this.loginForm.valid && !this.isLoading) {
-      const credentials = this.loginForm.value;
-      console.log('Sending credentials:', credentials);
+    if (this.loginForm.valid) {
       this.isLoading = true;
-      this.errorMessage = '';
-  
-      this.loginForm.disable();
-  
+      const credentials = this.loginForm.value;
       this.authService.login(credentials.email, credentials.password).subscribe({
         next: (response: any) => {
-          console.log('Login Successful:', response);
+          console.log('Login Successful', response);
           localStorage.setItem('currentUserToken', JSON.stringify(response));
           this.authService.setLoggedInUser(response);
           
@@ -57,22 +60,45 @@ export class LoginComponent {
               return;
           }
         },
-        error: (error: HttpErrorResponse) => {
-          
-          console.error('Login Failed:', error);
-      
-          if (error.status === 401) {
-            this.errorMessage = 'Authentication Failed. Invalid username or password.';
-          } else {
-            this.errorMessage =
-              error && error.message
-                ? error.message
-                : 'An unexpected error occurred. Please try again later.';
-          }
+        error: (error) => {
+          this.errorMessage = 'Invalid username or password';
           this.isLoading = false;
-          this.loginForm.enable();
         }
       });
     }
+  }
+
+  onRegister() {
+    if (this.registerForm.valid) {
+      const newUser = this.registerForm.value;
+      this.authService.register(newUser).subscribe({
+        next: (response) => {
+          localStorage.setItem('currentUserToken', JSON.stringify(response));
+          this.authService.setLoggedInUser(response);
+
+          switch(response.role) {
+            case 'admin':
+              this.router.navigate(['/adminHome']);
+              break;
+            case 'user':
+              this.router.navigate(['/home']);
+              break;
+            case 'GP':
+              this.router.navigate(['/gpHome']);
+              break;
+            default:
+              this.regErrorMessage = 'Role not recognised, contact support.';
+              return;
+          }
+        },
+        error: (error) => {
+          this.regErrorMessage = 'Registration failed. Please try again.';
+        }
+      });
+    }
+  }
+
+  toggleView() {
+    this.isActive = !this.isActive;
   }
 }

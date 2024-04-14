@@ -19,11 +19,11 @@
 
     <!-- Display these links if the user is logged in -->
     <ng-container *ngIf="isLoggedIn() && isUser()">
-      <a routerLink="/book-appointment">Book Appointment</a>
-      <a routerLink="/view-appointments">Appointments</a>
-      <a routerLink="/shop">shop</a>
-      <a routerLink="/basket">Basket</a>
+      <a routerLink="/user-booking">Book Appointment</a>
+      <a routerLink="/user-appointments">Appointments</a>
       <a routerLink="/user-profile">Account</a>
+      <a routerLink="/all-user-items">shop</a>
+      <a routerLink="/user-basket"> <fa-icon [icon]="faShoppingCart"></fa-icon><span *ngIf="basketCount > 0" class="badge">{{ basketCount }}</span></a>
     </ng-container>
 
     <ng-container *ngIf="isLoggedIn() && isGP()">
@@ -32,9 +32,6 @@
       <a routerLink="/gp-profile">Account</a>
     </ng-container>
 
-    <ng-container *ngIf="!isLoggedIn()">
-      <a routerLink="/register">Register</a>
-    </ng-container>
 
     <ng-container *ngIf="isLoggedIn()">
       <button (click)="onLogout()">Logout</button>

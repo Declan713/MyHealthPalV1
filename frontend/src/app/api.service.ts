@@ -46,7 +46,7 @@ export class ApiService {
 
 
   ///////////////////////////////////////
-  //////////Admin Routes/////////
+  //////////Admin Routes////////////////
 
   // Fetch all users
   getAllUsers(): Observable<any> {
@@ -98,7 +98,18 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/admin/delete_item/${itemId}`, { headers: this.getHeaders() });
   }
 
+   ///////////////////////////////////////
+  /////////User Routes///////////////////
 
+  // add item to basket 
+  addToBasket(itemId: string): Observable<any> {
+    const item = {_id: itemId};
+    return this.http.post(`${this.apiUrl}/user/basket/add`, item, { headers: this.getHeaders() });
+  }
 
+  getBasketCount(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/user/basket/count`, { headers: this.getHeaders() });
+}
+  
  
 }

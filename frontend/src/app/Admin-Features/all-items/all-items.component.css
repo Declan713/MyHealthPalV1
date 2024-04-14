@@ -3,15 +3,17 @@
   grid-template-columns: repeat(3, 1fr); 
   gap: 20px;
   padding: 50px;
-  justify-items: center; 
+  justify-items: center;
+  background-color: #c9d6ff;
+  background: linear-gradient(to right, #c3f1f7, #c9d6ff);
 }
 
 
 .item {
-  background-color: #98e7d6;
+  background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
-  border: 1px solid #000000;
+  border: 1px solid #512da8;
   border-radius: 8px;
   border-radius: 8px;
   height: auto;
@@ -20,6 +22,7 @@
 
 .item:hover {
   transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .item img {
@@ -31,14 +34,15 @@
 }
 
 .item-details {
-  padding: 10px;
+  padding: 18px;
   color: #000000;
-  
-  
+  height: 49.5%;
+  border-radius: 8px;
+  background: linear-gradient(to right,#c9d6ff, #ab94e3);
 }
 
 h3 {
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid #512da8;
 }
 
 
@@ -52,7 +56,7 @@ h3 {
   padding-top: 61px;
   padding-bottom: 3px;
   padding-left: 20px;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid #512da8;
 }
 
 .Title {
@@ -87,7 +91,7 @@ h3 {
 }
 
 button {
-  background-color: #333;
+  background-color: #512da8;
   color: #fff;
   padding: 8px 16px;
   border: none;

@@ -1,19 +1,42 @@
-<div class="container">
-  <h1>Login</h1>
-  <div>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <div class="error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-              <div *ngIf="loginForm.get('email')?.hasError('required')">Email is required</div>
-          </div>
-          <label for="username">Email:</label>
-          <input type="text" id="email" formControlName="email" />
-          <br>
-          <div class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-              <div *ngIf="loginForm.get('password')?.hasError('required')">Password is required</div>
-          </div>
-          <label for="password">Password:</label>
-          <input type="password" id="password" formControlName="password" />
-          <button type="submit">Login</button>
-      </form>
+<div class="main-container">
+    <div class="container" id="container" [class.active]="isActive">
+        <div class="form-container sign-up" *ngIf="isActive">
+            <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+                <h1>Create Account</h1>
+                <span>or use your email for registration</span>
+                <input type="text" placeholder="Name" formControlName="name">
+                <input type="email" placeholder="Email" formControlName="email">
+                <input type="text" placeholder="medicalNumber" formControlName="medicalNumber">
+                <input type="password" placeholder="Password" formControlName="password">
+                <button type="submit">Sign Up</button>
+                <div *ngIf="regErrorMessage" class="error">{{ regErrorMessage }}</div>
+            </form>
+        </div>
+
+        <div class="form-container sign-in" *ngIf="!isActive">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <h1>Sign In</h1>
+                <span>via your email and password</span>
+                <input type="email" placeholder="Email" formControlName="email">
+                <input type="password" placeholder="Password" formControlName="password">
+                <button type="submit">Sign In</button>
+                <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+            </form>
+        </div>
+
+        <div class="toggle-container" (click)="toggleView()">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
   </div>
 </div>

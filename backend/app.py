@@ -107,7 +107,7 @@ def register():
         "email": data['email'],
         "avatar": "man.png",
         "password": hashed_password,
-        "medicalNumber": data.get('medicalNumber', ''),  # Optional field
+        "medicalNumber": data['medicalNumber'],
         "basket": [],
         "purchaseHistory": [],
         "role": "user"
@@ -118,7 +118,9 @@ def register():
 
     # Check if the user was successfully inserted
     if result.inserted_id:
-        return jsonify({"message": "User registered successfully", "user_id": str(result.inserted_id)}), 201
+        # Generate a token for the new user
+        token = generate_token(result.inserted_id, "user") 
+        return jsonify({"message": "User registered successfully", "token": token, "user_id": str(result.inserted_id), "role":"user"}), 201
     else:
         return jsonify({"error": "Registration failed"}), 500
 
@@ -351,38 +353,45 @@ def view_user_basket(user_id):
     else:
         return jsonify({"error": "User not found"}), 404
 
-# Add Items to User Basket/Shopping Cart
-@app.route('/user/basket/add/<string:user_id>', methods=['POST'])
+
+# Get user basket count
+@app.route('/api/user/basket/count', methods=['GET'])
 @jwt_required
-def add_to_basket(user_id):
-    current_user_id = ObjectId(user_id)
+def get_basket_count():
+    current_user_id = request.current_user['user_id']
+    user = users_collection.find_one({'_id': ObjectId(current_user_id)})
+    if user and 'basket' in user:
+        return jsonify({"count": len(user['basket'])}), 200
+    else:
+        return jsonify({"count": 0}), 200
+
+
+
+# Add Items to User Basket/Shopping Cart
+@app.route('/user/basket/add', methods=['POST'])
+@jwt_required
+def add_to_basket():
+    current_user_id = ObjectId(request.current_user['user_id'])
 
     # Get item details from request body
-    data = request.json
-    item_id = data.get('item_id')
-    item_name = data.get('item_name')
-    item_price = data.get('item_price')
+    item_id = request.json.get("_id")
+    if not item_id:
+        return jsonify({"error": "Missing item ID"}), 400
 
-    # Check if the user exists
-    user = users_collection.find_one({'_id': current_user_id})
-    if user:
-        # Initialize the basket if it doesn't exist
-        if 'basket' not in user:
-            user['basket'] = []
+    item = items_collection.find_one({"_id": ObjectId(item_id)})
+    if not item:
+        return jsonify({"error": "Item not found"}), 404
 
-        # Add the item to the basket
-        user['basket'].append({
-            'item_id': item_id,
-            'item_name': item_name,
-            'item_price': item_price
-        })
+    update_result = users_collection.update_one(
+        {"_id": current_user_id},
+        {"$push": {"basket": {"_id": item["_id"], "name": item["name"], "price": item["price"]}}}
+    )
 
-        # Update the user document in the database
-        users_collection.update_one({'_id': current_user_id}, {'$set': {'basket': user['basket']}})
-
+    if update_result.modified_count:
         return jsonify({"message": "Item added to basket successfully"}), 200
     else:
-        return jsonify({"error": "User not found"}), 404
+        return jsonify({"error": "Failed to add item to basket"}), 500
+
 
 # Remove Item from User Basket/Shopping Cart
 @app.route('/user/<string:user_id>/basket/remove', methods=['POST'])

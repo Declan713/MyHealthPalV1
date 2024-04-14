@@ -4,7 +4,8 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 
 export interface AuthResponse {
-  token: string; // Updated to match response
+  token: string;
+  userId: string;
   name?: string;
   role?: string;
 }
@@ -82,7 +83,7 @@ export class AuthService {
     return currentUser ? currentUser.token : null;
   }
 
-  register(userData: any): Observable<any> {
+  register(userData: {name: string, email: string, medicalNumber: string, password: string}): Observable<any> {
     return this.http.post(`${this.BASE_URL}/register`, userData)
       .pipe(catchError(this.handleError));
   }

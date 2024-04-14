@@ -6,7 +6,7 @@
     border: 1px solid #555;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    background-color: #75efd3; 
+    background: linear-gradient(to right,#c9d6ff, #8decdd);
     color: #ffffff; 
 }
 
@@ -15,17 +15,20 @@
 h2 {
     color: #ffff;
     border-bottom: 1px solid #000000;
+    text-align: center;
 }
     
 /* Styling for account details */
 p {
     margin: 10px 0;
+    text-align: center;
 }
 
 .user-icon img {
     width: 81px; 
     height: 81px;
     margin-right: 73px;
+    margin-left: 45%;
     border: 1px solid #000000;
     border-radius: 40px;
 }
@@ -36,12 +39,12 @@ p {
     border: 1px solid #555;
     border-radius: 8px;
     padding: 10px;
-    background-color: #c3fbf2;
+    background-color: #c8d7fe;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease-in-out;
 }
 
 .account-details:hover {
-    background-color: #2f8572;
+    background-color: #512da8;
 }
     

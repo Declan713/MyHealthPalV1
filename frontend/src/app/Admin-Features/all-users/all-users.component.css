@@ -3,35 +3,37 @@
     margin: 10px auto;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #8decdd;
+    background: linear-gradient(to right,#c9d6ff, #ab94e3);
+    border-radius: 10px;
 }
-  
+
 h1 {
-    color: #333;
+    color: #512da8; 
     text-align: center;
 }
   
 p {
-    color: #666;
+    color: #000000; 
     text-align: center;
 }
   
-  /* User card styles */
+/* User card styles */
 .user-card {
     display: flex;
     align-items: center;
-    background-color: rgb(255, 255, 255);
+    background: linear-gradient(to right,#cad7fd, #ffffff);
+    border-radius: 10px;
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 10px;
-    border: 1px solid hsl(160, 70%, 48%);
+    border: 2px solid #ac97e4; 
 }
   
 .user-icon img {
     width: 81px; 
     height: 81px;
     margin-right: 73px;
-    border: 1px solid #000000;
+    border: 1px solid #512da8; 
     border-radius: 40px;
 }
   
@@ -49,15 +51,16 @@ p {
     padding: 10px 20px;
     margin-left: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease; 
 }
   
 .edit {
-    background-color: #4CAF50; /* Green */
+    background-color: #5c6bc0; 
     color: white;
 }
   
 .delete {
-    background-color: #F44336; /* Red */
+    background-color: #512da8; 
     color: white;
 }
   

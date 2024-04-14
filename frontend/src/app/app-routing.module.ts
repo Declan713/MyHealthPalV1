@@ -19,6 +19,11 @@ import { HomeComponent } from "./Homes/user-home/user-home.component";
 import { UserProfileComponent } from "./Profiles/user-profile/user-profile.component";
 import { AllItemsComponent } from "./Admin-Features/all-items/all-items.component";
 import { ViewItemComponent } from "./Admin-Features/view-item/view-item.component";
+import { AllUserItemsComponent } from "./User-Features/all-user-items/all-user-items.component";
+import { ItemComponent } from "./User-Features/item/item.component";
+import { UserAppointmentsComponent } from "./User-Features/user-appointments/user-appointments.component";
+import { UserBasketComponent } from "./User-Features/user-basket/user-basket.component";
+import { UserBookingComponent } from "./User-Features/user-booking/user-booking.component";
 
 
 
@@ -29,15 +34,20 @@ export const routes: Routes = [
     { path: 'adminHome', component: AdminHomeComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole:'admin'}},
     { path: 'gpHome', component: GPHomeComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole:'GP'}},
 
-    
+    // Admin Only Page Paths 
     { path: 'all-users', component: AllUsersComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
     { path: 'all-gps', component: AllGpsComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
     { path: 'admin-profile', component: AdminProfileComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
     { path: 'item-functions', component: AllItemsComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
     { path: 'item/:id', component: ViewItemComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'admin' }},
 
-
+    // User Only Page Paths
     { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
+    { path: 'all-user-items', component: AllUserItemsComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
+    { path: 'view-item/:id', component: ItemComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
+    { path: 'user-appointments', component: UserAppointmentsComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
+    { path: 'user-basket', component: UserBasketComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
+    { path: 'user-booking', component: UserBookingComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
 
     {path: 'gp-profile', component: GpProfileComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}}
 

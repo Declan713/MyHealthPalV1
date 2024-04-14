@@ -1,6 +1,6 @@
 <div class="search-sort-bar">
   <div class="Title">Items</div>
-  <input type="search" placeholder="Search item here">
+  <input type="search" placeholder="Search item here" [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()">
   <div class="sort-buttons">
     <button class="add-item" (click)="openAddItemModal()">Create a New Item</button>
     <button (click)="sortItemsAlphabetically()">Sort {{ sortDirection === 'asc' ? 'A-Z' : 'Z-A' }}</button>

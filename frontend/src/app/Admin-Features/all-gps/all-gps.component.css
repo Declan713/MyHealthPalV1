@@ -3,7 +3,8 @@
     margin: 10px auto;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #8decdd;
+    background: linear-gradient(to right,#c9d6ff, #8decdd);
+    border-radius: 10px;
 }
   
 h1 {
