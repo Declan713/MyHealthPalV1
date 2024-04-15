@@ -1,0 +1,23 @@
+<div class="payment-modal">
+  <div class="modal-content">
+    <h2>Payment Details</h2>
+    <form (ngSubmit)="submitPayment()">
+      <div class="form-group">
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" [(ngModel)]="cardDetails.cardNumber" name="cardNumber" required>
+      </div>
+      <div class="form-group">
+        <label for="expirationDate">Expiration Date:</label>
+        <input type="text" id="expirationDate" [(ngModel)]="cardDetails.expirationDate" name="expirationDate" required>
+      </div>
+      <div class="form-group">
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" [(ngModel)]="cardDetails.cvv" name="cvv" required>
+      </div>
+      <div class="form-actions">
+        <button type="submit">Confirm Payment</button>
+        <button type="button" (click)="closeModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

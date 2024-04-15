@@ -50,7 +50,7 @@ export class ItemComponent implements OnInit {
 
     this.apiService.addToBasket(itemId).subscribe({
       next: (response: any) => {
-        console.log('added to watchlist successfully!', response)
+        console.log('added to basket successfully!', response)
       },
       error: (error) => {
         console.error('Error adding')

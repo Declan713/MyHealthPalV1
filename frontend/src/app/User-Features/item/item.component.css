@@ -18,7 +18,7 @@
 
 
 
-.item-image {
+.item-poster {
   max-width: 100%;
   height: auto;
   max-height: 400px;
@@ -28,13 +28,14 @@
 }
 
 
-.item-image:hover {
+.item-poster:hover {
   transform: scale(1.05); 
 }
 
 
 .item-details {
   padding: 10px;
+  color: #000000;
 }
 
 

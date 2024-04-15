@@ -1,1 +1,15 @@
-<p>user-appointments works!</p>
+<div class="appointments-container">
+  <h2 class="title">Your Appointments</h2>
+  <div class="appointment-list" *ngIf="appointments.length; else noAppointments">
+      <div class="appointment-item" *ngFor="let appointment of appointments">
+          <div class="appointment-details">
+              <div class="appointment-date"><strong>Date: </strong>{{ appointment.dateTime | date: 'medium' }}</div>
+              <div class="appointment-gp"><strong>GP: </strong>{{ appointment.gpName }}</div>
+              <div class="appointment-status"><strong>Status: </strong> {{ appointment.status }}</div>
+          </div>
+      </div>
+  </div>
+  <ng-template #noAppointments>
+      <div class="no-appointments">No appointments found.</div>
+  </ng-template>
+</div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, catchError, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 
@@ -107,9 +107,65 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/user/basket/add`, item, { headers: this.getHeaders() });
   }
 
+  // Get Basket Item Count
   getBasketCount(): Observable<any> {
     return this.http.get(`${this.apiUrl}/api/user/basket/count`, { headers: this.getHeaders() });
-}
-  
+  }
+
+  // View Basket
+  viewBasket(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user/basket`, { headers: this.getHeaders() });
+  }
+
+  // Remove Item or decrease item quantity from Basket
+  updateBasket(itemId: string, decrement: number): Observable<any> {
+    const body = { _id: itemId, quantity: decrement };
+    // console.log(`Sending request to ${this.apiUrl}/user/basket/update with`, body);  
+    return this.http.post(`${this.apiUrl}/user/basket/update`, body, { headers: this.getHeaders() });
+  }
+
+  // View User Account
+  getUserProfile(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user_profile`, { headers: this.getHeaders() });
+  }
+
+  // Book Appointment 
+  bookAppointment(medicalNumber: string, appointmentDate: string): Observable<any> {
+    const body = { medicalNumber: medicalNumber, appointment_date: appointmentDate };
+    // console.log('Booking appointment with:', body);
+    return this.http.post(`${this.apiUrl}/book/appointment`, body, { headers: this.getHeaders() })
+      .pipe(
+      catchError((error: HttpErrorResponse) => {
+        const errorResponse = error.error.error || 'Server error';
+        console.error('Error during booking:', errorResponse);
+        return throwError(errorResponse);
+      })
+    );
+  }
+
+  // View Appointments
+  getUserAppointments(userId: string): Observable<any> {
+    console.log("Fetching appointments for user ID:", userId);  // Log the user ID
+    return this.http.get(`${this.apiUrl}/user_appointments/${userId}`, { headers: this.getHeaders() })
+    .pipe(
+      // tap(appointments => console.log("Received appointments:", appointments)),  
+      catchError(error => {
+        // console.error('Error fetching appointments:', error);
+        return throwError(() => new Error('Failed to fetch appointments'));
+        })
+      );
+  }
+
+  // Purchase Items in the basket
+  purchaseItems(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/purchase`, {}, { headers: this.getHeaders() })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error during purchase:', error.message);
+          return throwError(() => new Error(error.error.message || 'Server error'));
+        })
+      );
+  }
+
  
 }

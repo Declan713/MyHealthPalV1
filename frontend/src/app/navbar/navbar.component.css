@@ -8,6 +8,10 @@
     position: relative;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    height: fit-content;
+    overflow: auto;
+    top: 20px;
 }
 
 .navbar-brand a {
@@ -78,7 +82,7 @@
     background-color: #5c6bc0; 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1122px) {
     .navbar-links {
         display: none;
         flex-direction: column;

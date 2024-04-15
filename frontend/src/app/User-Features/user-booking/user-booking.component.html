@@ -1,1 +1,13 @@
-<p>user-booking works!</p>
+<div class="booking-container">
+    <h2>Book an Appointment</h2>
+    <div class="input-group">
+        <input type="text" [(ngModel)]="medicalNumber" placeholder="Enter Your Medical Number" />
+    </div>
+    <div class="input-group">
+        <input type="datetime-local" [(ngModel)]="appointmentDate" />
+    </div>
+    <div class="input-group">
+        <button (click)="bookAppointment()">Book Appointment</button>
+    </div>
+    <p *ngIf="message" class="flash-message">{{ message }}</p>
+</div>

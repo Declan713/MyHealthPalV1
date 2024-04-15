@@ -5,7 +5,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 
 export interface AuthResponse {
   token: string;
-  userId: string;
+  user_id: string;
   name?: string;
   role?: string;
 }
@@ -22,13 +22,17 @@ export class AuthService {
   private BASE_URL = 'http://127.0.0.1:5000';
 
   constructor(private http: HttpClient) {
+    const userJson = localStorage.getItem('currentUser');
+    this.currentUserSubject = new BehaviorSubject<AuthResponse | null>(userJson ? JSON.parse(userJson) : null);
     this.currentUserSubject = new BehaviorSubject<AuthResponse | null>(this.loadUserFromStorage());
     this.currentUser = this.currentUserSubject.asObservable();
     this.isLoggedInSubject.next(this.isValidUser(this.currentUserSubject.value));
   }
 
   public get currentUserValue(): AuthResponse | null {
-    return this.currentUserSubject.value;
+    const user = this.currentUserSubject.value;
+    // console.log('Current User:', user);
+    return user;
   }
 
   setLoggedInUser(user: AuthResponse): void {
@@ -46,15 +50,18 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.BASE_URL}/login`, { email, password })
-      .pipe(
-        map(response => {
-          localStorage.setItem('currentUserToken', JSON.stringify(response));
-          this.setLoggedInUser(response);
-          return response;
-        }),
-        catchError(error => throwError(() => error))
-      );
+    return this.http.post<AuthResponse>(`${this.BASE_URL}/login`, { email, password }).pipe(
+      map(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        console.log('Login successful, user:', user);
+        return user;
+      }),
+      catchError(error => {
+        console.error('Login failed:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   logout(): Observable<any> {

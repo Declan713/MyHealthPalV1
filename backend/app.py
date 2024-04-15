@@ -2,13 +2,27 @@ from flask import Flask, request, jsonify, send_from_directory
 from functools import wraps
 from pymongo import MongoClient, ASCENDING, DESCENDING
 from bson import ObjectId
+from flask.json import JSONEncoder
 from flask_cors import CORS
 import bcrypt
 import jwt
 from datetime import datetime, timedelta
+import logging
+from datetime import timedelta
 
+
+logging.basicConfig(level=logging.DEBUG)
+
+# Helps convert ObjectId to strings in every route.
+class CustomJSONEncoder(JSONEncoder):
+    """Extend JSONEncoder to add support for ObjectId."""
+    def default(self, obj):
+        if isinstance(obj, ObjectId):
+            return str(obj)
+        return super(CustomJSONEncoder, self).default(obj)
 
 app = Flask(__name__)
+app.json_encoder = CustomJSONEncoder
 CORS(app)
 app.config['SECRET_KEY'] = 'mysecret'
 
@@ -323,7 +337,7 @@ def get_gp_appointments():
 # View User Account/Show Profile
 @app.route('/user_profile', methods=['GET'])
 @jwt_required
-def view_user_profile():
+def getUserProfile():
     current_user_id = ObjectId(request.current_user['user_id'])
 
     user = users_collection.find_one({'_id': current_user_id})
@@ -338,10 +352,10 @@ def view_user_profile():
         return jsonify({"error": "User not found"}), 404
 
 # View User Basket/Shopping Cart
-@app.route('/user/basket/<string:user_id>', methods=['GET'])
+@app.route('/user/basket', methods=['GET'])
 @jwt_required
-def view_user_basket(user_id):
-    current_user_id = ObjectId(user_id)
+def view_user_basket():
+    current_user_id = ObjectId(request.current_user['user_id'])
 
     user = users_collection.find_one({'_id': current_user_id})
     if user:
@@ -360,8 +374,10 @@ def view_user_basket(user_id):
 def get_basket_count():
     current_user_id = request.current_user['user_id']
     user = users_collection.find_one({'_id': ObjectId(current_user_id)})
+
     if user and 'basket' in user:
-        return jsonify({"count": len(user['basket'])}), 200
+        total_quantity = sum(item['quantity'] for item in user['basket'])
+        return jsonify({"count": total_quantity}), 200
     else:
         return jsonify({"count": 0}), 200
 
@@ -375,6 +391,7 @@ def add_to_basket():
 
     # Get item details from request body
     item_id = request.json.get("_id")
+    quantity = int(request.json.get("quantity", 1))
     if not item_id:
         return jsonify({"error": "Missing item ID"}), 400
 
@@ -382,9 +399,17 @@ def add_to_basket():
     if not item:
         return jsonify({"error": "Item not found"}), 404
 
+    # Create an update query that checks if the item already exists in the basket
     update_result = users_collection.update_one(
+        {"_id": current_user_id, "basket._id": ObjectId(item_id)},
+        {"$inc": {"basket.$.quantity": quantity}}
+    )
+
+    if update_result.modified_count == 0:
+        # If the item does not exist in the basket, add it with the initial quantity
+        update_result = users_collection.update_one(
         {"_id": current_user_id},
-        {"$push": {"basket": {"_id": item["_id"], "name": item["name"], "price": item["price"]}}}
+        {"$push": {"basket": {"_id": item["_id"], "name": item["name"], "price": item["price"], "item_image": item["item_image"], "quantity": quantity}}}
     )
 
     if update_result.modified_count:
@@ -394,30 +419,49 @@ def add_to_basket():
 
 
 # Remove Item from User Basket/Shopping Cart
-@app.route('/user/<string:user_id>/basket/remove', methods=['POST'])
+@app.route('/user/basket/update', methods=['POST'])
 @jwt_required
-def remove_from_basket(user_id):
-    current_user_id = ObjectId(user_id)
+def update_basket():
+    current_user_id = ObjectId(request.current_user['user_id'])
+    item_id = request.json.get('_id')
 
-    # Get item ID from request body
-    data = request.json
-    item_id = data.get('item_id')
+    # Set decrement to 1 to ensure only one unit is decremented
+    decrement = 1
 
-    # Check if the user exists
-    user = users_collection.find_one({'_id': current_user_id})
-    if user:
-        # Check if the user has a basket
-        if 'basket' in user:
-            # Remove the item from the basket if it exists
-            updated_basket = [item for item in user['basket'] if item['item_id'] != item_id]
+    # logging.debug("User ID: %s", current_user_id)
+    # logging.debug("Request Data: %s", request.json)
+    # logging.debug("Attempting to decrement item with ID %s for user %s by %d", item_id, current_user_id, decrement)
 
-            # Update the user document in the database
-            users_collection.update_one({'_id': current_user_id}, {'$set': {'basket': updated_basket}})
-            return jsonify({"message": "Item removed from basket successfully"}), 200
-        else:
-            return jsonify({"error": "User has no items in the basket"}), 400
-    else:
-        return jsonify({"error": "User not found"}), 404
+    # Update the quantity by decrementing it by one
+    result = users_collection.update_one(
+        {'_id': current_user_id, 'basket._id': ObjectId(item_id)},
+        {'$inc': {'basket.$.quantity': -decrement}}
+    )
+
+    if result.modified_count == 0:
+        logging.error("Item not found in basket or decrement not applicable: %s", item_id)
+        return jsonify({"error": "Item not found in basket or decrement not applicable"}), 404
+
+    # After decrementing, find the item to check if its quantity is zero
+    user = users_collection.find_one(
+        {'_id': current_user_id, 'basket._id': ObjectId(item_id)},
+        {'basket.$': 1})
+    
+    item = user['basket'][0] if user and 'basket' in user and len(user['basket']) > 0 else None
+
+    # If quantity is zero or less, remove the item from the basket
+    if item and item['quantity'] <= 0:
+        remove_result = users_collection.update_one(
+            {'_id': current_user_id},
+            {'$pull': {'basket': {'_id': ObjectId(item_id)}}}
+        )
+        if remove_result.modified_count == 0:
+            logging.error("Failed to remove item with zero quantity: %s", item_id)
+            return jsonify({"error": "Failed to remove item with zero quantity"}), 404
+        logging.info("Item removed from basket due to zero quantity for user %s", current_user_id)
+
+    # logging.info("Basket updated successfully for user %s", current_user_id)
+    return jsonify({"message": "Basket updated successfully"}), 200
 
 
 # Add a Review to an Item
@@ -556,41 +600,60 @@ def get_user_reviews():
 @app.route('/book/appointment', methods=['POST'])
 @jwt_required
 def book_appointment():
-    current_user_id = ObjectId(request.current_user['user_id'])
-    
-    # Fetch user details from the database
-    user = users_collection.find_one({'_id': current_user_id})
-    if not user:
-        return jsonify({"error": "User not found"}), 404
-    
-    # Extract appointment details from request body
-    data = request.json
-    gp_id = ObjectId(data.get('gp_id'))
-    appointment_date_str = data.get('appointment_date')
-
+    logging.info("Received request to book an appointment")
     try:
+        current_user_id = ObjectId(request.current_user['user_id'])
+        data = request.json
+        medical_number = data.get('medicalNumber')
+        appointment_date_str = data.get('appointment_date')
+
+        logging.debug(f"Data received: {data}")
+
+        # Fetch user details from the database
+        user = users_collection.find_one({'_id': current_user_id})
+        if not user:
+            logging.error("User not found")
+            return jsonify({"error": "User not found"}), 404
+
+        # Find the GP using the medical number
+        gp = GPS_collection.find_one({"medicalNumbers": medical_number})
+        if not gp:
+            logging.error("GP not found for the provided medical number")
+            return jsonify({"error": "GP not found for the provided medical number"}), 404
+
         # Convert appointment_date_str to datetime object
-        appointment_date = datetime.strptime(appointment_date_str, '%Y-%m-%dT%H:%M:%S')
-    except ValueError:
-        return jsonify({"error": "Invalid date format"}), 400
+        appointment_date = datetime.strptime(appointment_date_str, '%Y-%m-%dT%H:%M')
 
-    # Create a new appointment document
-    new_appointment = {
-        "userId": current_user_id,
-        "gpId": gp_id,
-        "userMedicalNumber": user.get('medicalNumber'),
-        "dateTime": appointment_date,  
-        "status": "pending",
-        
-    }
+        # Check for conflicting appointments within a 2-hour window
+        min_time = appointment_date - timedelta(hours=2)
+        max_time = appointment_date + timedelta(hours=2)
+        conflict = Appointments_collection.find_one({
+            "gpId": gp['_id'],
+            "dateTime": {"$gte": min_time, "$lte": max_time}
+        })
+        if conflict:
+            logging.error("There is a conflicting appointment within 2 hours of the requested time")
+            return jsonify({"error": "Appointment time conflict within 2 hours"}), 409
 
-    # Insert the new appointment into the database
-    result = Appointments_collection.insert_one(new_appointment)
+        # Create a new appointment document
+        new_appointment = {
+            "userId": current_user_id,
+            "gpId": gp['_id'],
+            "userMedicalNumber": medical_number,
+            "dateTime": appointment_date,
+            "status": "pending...",
+        }
 
-    if result.inserted_id:
-        return jsonify({"message": "Appointment booked successfully", "appointment_id": str(result.inserted_id)}), 200
-    else:
-        return jsonify({"error": "Failed to book appointment"}), 500
+        # Insert the new appointment into the database
+        result = Appointments_collection.insert_one(new_appointment)
+        if result.inserted_id:
+            return jsonify({"message": "Appointment booked successfully", "appointment_id": str(result.inserted_id)}), 200
+        else:
+            logging.error("Failed to insert the appointment into the database")
+            return jsonify({"error": "Failed to book appointment"}), 500
+    except Exception as e:
+        logging.exception("Failed to process the appointment booking")
+        return jsonify({"error": str(e)}), 400
 
 # Purchase Items
 @app.route('/purchase', methods=['POST'])
@@ -627,22 +690,18 @@ def purchase_items():
 @jwt_required
 def get_user_appointments(user_id):
     try:
-        # Convert the user_id to ObjectId 
         user_object_id = ObjectId(user_id)
-
-        # Retrieve appointments for the specified user
         user_appointments = Appointments_collection.find({"userId": user_object_id})
 
-        # Convert MongoDB cursor to a list and handle ObjectId serialization
         appointments_list = []
         for appointment in user_appointments:
-            appointment['_id'] = str(appointment['_id'])
-            appointment['userId'] = str(appointment['userId'])
-            appointment['gpId'] = str(appointment['gpId'])
+            # Fetch GP details for each appointment
+            gp_details = GPS_collection.find_one({"_id": appointment['gpId']})
+            if gp_details:
+                appointment['gpName'] = gp_details.get('name', 'Unknown GP')
             appointments_list.append(appointment)
 
-        return jsonify(appointments_list)
-
+        return jsonify(appointments_list), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     

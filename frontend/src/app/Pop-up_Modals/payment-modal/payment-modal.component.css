@@ -1,0 +1,61 @@
+.payment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fafaf5;
+    color: #000000;
+    padding: 33px;
+    border-radius: 15px;
+    width: 535px;  /* Adjust width as necessary for your form */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+
+.form-actions {
+    text-align: right;
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;  /* Ensures the cursor changes to a pointer when hovering over the button */
+    border: none; /* Removes the default border */
+    background-color: #007bff; /* Primary blue color for the confirm button */
+    color: white; /* White text color for better readability */
+}
+
+.form-actions button:hover {
+    background-color: #0056b3; /* Darker blue on hover for better interaction feedback */
+    color: #ffffff;
+}
+
+/* Optional: Responsive adjustments for smaller devices */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%; /* Makes the modal responsive by adjusting the width on smaller screens */
+        padding: 20px; /* Slightly reduce padding on smaller devices */
+    }
+}

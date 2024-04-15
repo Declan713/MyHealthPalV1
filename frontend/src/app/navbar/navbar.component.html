@@ -23,7 +23,7 @@
       <a routerLink="/user-appointments">Appointments</a>
       <a routerLink="/user-profile">Account</a>
       <a routerLink="/all-user-items">shop</a>
-      <a routerLink="/user-basket"> <fa-icon [icon]="faShoppingCart"></fa-icon><span *ngIf="basketCount > 0" class="badge">{{ basketCount }}</span></a>
+      <a routerLink="/user-basket"> <fa-icon [icon]="faShoppingCart"></fa-icon><span *ngIf="basketCount > 0" class="badge">({{ basketCount }})</span></a>
     </ng-container>
 
     <ng-container *ngIf="isLoggedIn() && isGP()">
