@@ -3,8 +3,8 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '../api.service'; 
-import { interval } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
+import { interval, Subscription } from 'rxjs';
+import { filter, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -15,18 +15,27 @@ export class NavbarComponent implements OnInit {
   menuOpen: boolean = false;
   basketCount: number = 0;
   faShoppingCart = faShoppingCart;
+  private basketCountSubscription!: Subscription;
   
   constructor(private authService: AuthService, private router: Router, private apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.fetchBasketCount();
+    this.setupBasketCountFetch();
   }
 
-  fetchBasketCount() {
-    // Fetch immediately and then every 30 seconds to keep the basket count updated
-    interval(30000).pipe(
-      startWith(0),
-      switchMap(() => this.apiService.getBasketCount())
+  ngOnDestroy(): void {
+    // Unsubscribe to prevent memory leaks
+    if (this.basketCountSubscription) {
+      this.basketCountSubscription.unsubscribe();
+    }
+  }
+
+  setupBasketCountFetch() {
+    // Only start fetching basket count when the user is logged in
+    this.basketCountSubscription = this.authService.isLoggedIn$.pipe(
+      filter(isLoggedIn => isLoggedIn),
+      switchMap(() => interval(30000).pipe(startWith(0))), 
+      switchMap(() => this.apiService.getBasketCount()) 
     ).subscribe({
       next: (response) => {
         this.basketCount = response.count;

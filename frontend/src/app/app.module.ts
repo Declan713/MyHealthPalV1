@@ -1,17 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms'; 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatListModule } from '@angular/material/list'; 
 
 
 import { AppComponent } from './app.component';
@@ -39,7 +32,6 @@ import { UserBookingComponent } from './User-Features/user-booking/user-booking.
 import { EditUserModalComponent } from './Pop-up_Modals/edit-user-modal/edit-user-modal.component';
 import { EditGpModalComponent } from './Pop-up_Modals/edit-gp-modal/edit-gp-modal.component';
 import { AddItemModalComponent } from './Pop-up_Modals/add-item-modal/add-item-modal.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { PaymentModalComponent } from './Pop-up_Modals/payment-modal/payment-modal.component';
 
 @NgModule({
@@ -65,22 +57,13 @@ import { PaymentModalComponent } from './Pop-up_Modals/payment-modal/payment-mod
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
     FontAwesomeModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatButtonModule,
-    MatSnackBarModule,
-    MatListModule,
   ],
-  providers: [
-    provideAnimationsAsync()
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
