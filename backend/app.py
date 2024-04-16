@@ -666,11 +666,28 @@ def purchase_items():
     if user:
         # Check if the user has items in their basket
         if 'basket' in user and len(user['basket']) > 0:
-            # Transfer items from basket to purchase history
-            purchase_items = user['basket']
             if 'purchaseHistory' not in user:
                 user['purchaseHistory'] = []
-            user['purchaseHistory'].extend(purchase_items)
+
+            for basket_item in user['basket']:
+                # Check if item already exists in the purchase history
+                found = False
+                for purchased_item in user['purchaseHistory']:
+                    if purchased_item['name'] == basket_item['name']:
+                        # If item exists, update quantity and total price
+                        purchased_item['quantity'] += basket_item['quantity']
+                        purchased_item['totalPrice'] = purchased_item['quantity'] * basket_item['price']
+                        found = True
+                        break
+
+                if not found:
+                    # If item isn't in the purchase history
+                    new_purchase = {
+                        'name': basket_item['name'],
+                        'quantity': basket_item['quantity'],
+                        'price': basket_item['price']
+                    }
+                    user['purchaseHistory'].append(new_purchase)
 
             # Clear the user's basket
             user['basket'] = []

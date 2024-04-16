@@ -1,13 +1,24 @@
 <div class="account-container">
     <div class="user-icon">
         <h2>Welcome, {{ userProfile?.name }}!</h2>
-        <img *ngIf="userProfile && userProfile.avatar" [src]="'http://127.0.0.1:5000/static/icons/' + userProfile.avatar" alt="User Icon">
+        <img *ngIf="userProfile?.avatar" [src]="'http://127.0.0.1:5000/static/icons/' + userProfile.avatar" alt="User Icon">
     </div>
     <div class="account-details">
         <p><strong>Email:</strong> {{ userProfile?.email }}</p>
         <p><strong>Medical Number:</strong> {{ userProfile?.medicalNumber }}</p>
-        <p><strong>Role: </strong> {{ userProfile?.role }}</p>
-        <p><strong>Purchase History:</strong> {{ userProfile?.purchaseHistory }}</p>
+        <p><strong>Role:</strong> {{ userProfile?.role }}</p>
+        <div *ngIf="userProfile?.purchaseHistory && userProfile.purchaseHistory.length > 0">
+            <strong>Purchase History:</strong>
+            <ul>
+                <li *ngFor="let item of userProfile.purchaseHistory">
+                    <img *ngIf="item.item_image" [src]="'http://127.0.0.1:5000/static/icons/' + item.item_image" alt="{{ item.name }}" style="width:50px; height:50px;">
+                    {{ item.name }} - {{ item.quantity }} &#64; ${{ item.price }} each (Total: ${{ item.totalPrice }})
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="!userProfile?.purchaseHistory || userProfile.purchaseHistory.length === 0">
+            <p>No purchase history.</p>
+        </div>
         <div *ngIf="isLoading">
             <p>Loading profile...</p>
         </div>

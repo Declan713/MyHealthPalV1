@@ -15,7 +15,7 @@
     color: #000000;
     padding: 33px;
     border-radius: 15px;
-    width: 535px;  /* Adjust width as necessary for your form */
+    width: 535px;  
 }
 
 .form-group {
@@ -41,21 +41,25 @@
 .form-actions button {
     padding: 10px 20px;
     margin-left: 10px;
-    cursor: pointer;  /* Ensures the cursor changes to a pointer when hovering over the button */
-    border: none; /* Removes the default border */
-    background-color: #007bff; /* Primary blue color for the confirm button */
-    color: white; /* White text color for better readability */
+    cursor: pointer;  
+    border: none; 
+    background-color: #007bff; 
+    color: white; 
 }
 
 .form-actions button:hover {
-    background-color: #0056b3; /* Darker blue on hover for better interaction feedback */
+    background-color: #0056b3; 
     color: #ffffff;
 }
 
-/* Optional: Responsive adjustments for smaller devices */
+.error {
+    color: red;
+}
+
+
 @media (max-width: 600px) {
     .modal-content {
-        width: 90%; /* Makes the modal responsive by adjusting the width on smaller screens */
-        padding: 20px; /* Slightly reduce padding on smaller devices */
+        width: 90%; 
+        padding: 20px; 
     }
 }

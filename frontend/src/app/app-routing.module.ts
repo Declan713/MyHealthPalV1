@@ -49,6 +49,7 @@ export const routes: Routes = [
     { path: 'user-basket', component: UserBasketComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
     { path: 'user-booking', component: UserBookingComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
 
+    // GP Only Page Paths
     {path: 'gp-profile', component: GpProfileComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}}
 
 

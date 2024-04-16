@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../api.service';
-import { MatDialog } from '@angular/material/dialog';
-import { PaymentModalComponent } from '../../Pop-up_Modals/payment-modal/payment-modal.component';
 
 @Component({
   selector: 'app-user-basket',
@@ -13,9 +11,9 @@ export class UserBasketComponent implements OnInit {
   isLoading: boolean = false;
   error: string | null = null;
   total: number = 0;
+  showPaymentModal = false;
   
-
-  constructor(private apiService: ApiService, public dialog: MatDialog) {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.loadUserBasket();
@@ -59,30 +57,14 @@ export class UserBasketComponent implements OnInit {
 
 
   openPaymentModal() {
-    const dialogRef = this.dialog.open(PaymentModalComponent, {
-      width: '300px'
-    });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog was closed', result);
-    });
+    this.showPaymentModal = true;
   }
+
+  // Reload the basket after successful payment
+  onPaymentSuccess() {
+    this.loadUserBasket(); 
+  }
+
+
+
 }
-
-  // processPayment(paymentDetails: any) {
-  //   console.log('Processing payment with details:', paymentDetails);
-  //   this.apiService.purchaseItems().subscribe({
-  //     next: (response) => {
-  //       console.log('Purchase successful', response);
-  //       this.isLoading = false;
-  //       this.dialog.closeAll();
-
-  //     },
-  //     error: (error) => {
-  //       console.error('Purchase failed:', error);
-  //       this.error = "Purchase failed. Please try again.";
-  //       this.isLoading = false;
-  //     }
-  //   });
-  // }
-

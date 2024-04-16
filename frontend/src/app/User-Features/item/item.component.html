@@ -1,19 +1,19 @@
 <div class="container item-details-container">
-    <div class="row">
-      <div class="col-sm-12">
-        <div *ngIf="item" class="product-item">
-            <img [src]="'http://127.0.0.1:5000/static/item_images/' + item.item_image" alt="{{ item.name }}" class="item-poster">
-          <div class="item-details">
-            <h2 class="item-title">{{ item.name }}</h2>
-            <p class="item-info">Description: {{ item.description }}</p>
-            <p class="item-info"><strong>Price: </strong> {{ item.price | currency }}</p>
-            <p class="item-info"><strong>Stock: </strong> {{ item.stock }}</p>
-            <p class="item-info"><strong>Item Category: </strong> {{ item.category }}</p>
-            <button class="add-to-basket" (click)="addToBasket()"><fa-icon [icon]="faCartPlus" class="icon-inside-button"></fa-icon><span class="text-under-icon">Add to Basket</span></button>
-          </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div *ngIf="item" class="product-item">
+        <img [src]="'http://127.0.0.1:5000/static/item_images/' + item.item_image" alt="{{ item.name }}" class="item-poster">
+        <div class="item-details">
+          <h2 class="item-title">{{ item.name }}</h2>
+          <p class="item-info">Description: {{ item.description }}</p>
+          <p class="item-info"><strong>Price: </strong> {{ item.price | currency }}</p>
+          <p class="item-info"><strong>Stock: </strong> {{ item.stock }}</p>
+          <p class="item-info"><strong>Item Category: </strong> {{ item.category }}</p>
+          <button class="add-to-basket" (click)="addToBasket()"><fa-icon [icon]="faCartPlus" class="icon-inside-button"></fa-icon><span class="text-under-icon">Add to Basket</span></button>
         </div>
       </div>
     </div>
+  </div>
 </div>
 <div class="container reviews-container">
   <div class="row">
@@ -21,12 +21,9 @@
       <h2 class="review-title">Item Reviews</h2>
       <div class="card-deck">
         <div class="card bg-light mb-3" *ngFor="let review of reviews">
-          <div class="card-header">
-            Review by {{ review.name }} on {{ review.date | date: 'medium' }}
-          </div>
+          <div class="card-header">Review by {{ review.name }} on {{ review.date | date: 'medium' }}</div>
           <div class="card-body">{{ review.comment }}</div>
-          <div class="card-footer">
-            {{ review.rating }} stars
+          <div class="card-footer">{{ review.rating }} stars
             <!-- <button class="btn btn-edit btn-sm float-right" (click)="editReview(review.review_id)">Edit</button> -->
             <button class="btn btn-danger btn-sm float-right" (click)="deleteReview(review.review_id)">Delete</button>
           </div>

@@ -131,7 +131,7 @@ h3 {
     margin-left: 0.5rem;
 }
 
-/* Responsive design adjustments */
+/* Responsive design */
 @media (max-width: 1177px) {
     .basket-container {
         flex-direction: row;

@@ -60,7 +60,7 @@ export class ItemComponent implements OnInit {
     
   }
 
-
+  // delete review from item (user-specific)
   deleteReview(reviewId: string) {
     const itemId = this.route.snapshot.paramMap.get('id');
     if (itemId) {

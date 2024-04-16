@@ -1,21 +1,30 @@
 <div class="payment-modal">
   <div class="modal-content">
     <h2>Payment Details</h2>
-    <form (ngSubmit)="submitPayment()">
+    <form #paymentForm="ngForm" (ngSubmit)="submitPayment()" novalidate>
       <div class="form-group">
         <label for="cardNumber">Card Number:</label>
-        <input type="text" id="cardNumber" [(ngModel)]="cardDetails.cardNumber" name="cardNumber" required>
+        <input type="text" id="cardNumber" [(ngModel)]="cardDetails.cardNumber" name="cardNumber" required #cardNumber="ngModel">
+        <div *ngIf="cardNumber.touched && cardNumber.invalid" class="error">
+          Card number is required.
+        </div>
       </div>
       <div class="form-group">
         <label for="expirationDate">Expiration Date:</label>
-        <input type="text" id="expirationDate" [(ngModel)]="cardDetails.expirationDate" name="expirationDate" required>
+        <input type="text" id="expirationDate" [(ngModel)]="cardDetails.expirationDate" name="expirationDate" required #expirationDate="ngModel">
+        <div *ngIf="expirationDate.touched && expirationDate.invalid" class="error">
+          Expiration date is required.
+        </div>
       </div>
       <div class="form-group">
         <label for="cvv">CVV:</label>
-        <input type="text" id="cvv" [(ngModel)]="cardDetails.cvv" name="cvv" required>
+        <input type="text" id="cvv" [(ngModel)]="cardDetails.cvv" name="cvv" required #cvv="ngModel">
+        <div *ngIf="cvv.touched && cvv.invalid" class="error">
+          CVV is required.
+        </div>
       </div>
       <div class="form-actions">
-        <button type="submit">Confirm Payment</button>
+        <button type="submit" [disabled]="!paymentForm.valid">Confirm Payment</button>
         <button type="button" (click)="closeModal()">Cancel</button>
       </div>
     </form>

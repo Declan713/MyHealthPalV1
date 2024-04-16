@@ -1,25 +1,25 @@
 <h2 class="title">Basket <span class="item-count">{{ basket.length }} items</span></h2>
 <div class="basket-container" *ngIf="basket && basket.length > 0; else noItems">
   <div class="basket-items">
-      <div class="basket-item" *ngFor="let item of basket">
-          <div class="item-image">
-            <img [src]="'http://127.0.0.1:5000/static/item_images/' + item.item_image" alt="{{ item.name }}" class="item-poster">
-          </div>
-          <div class="item-details">
-              <div class="item-name">{{ item.name }}</div>
-              <div class="item-price">{{ item.price | currency }}</div>
-              <div class="item-quantity">Quantity: {{ item.quantity }}</div>
-              <button class="remove-item" (click)="removeItem(item._id, item.quantity)">Remove Item</button>
-          </div>
+    <div class="basket-item" *ngFor="let item of basket">
+      <div class="item-image">
+        <img [src]="'http://127.0.0.1:5000/static/item_images/' + item.item_image" alt="{{ item.name }}" class="item-poster">
       </div>
+      <div class="item-details">
+        <div class="item-name">{{ item.name }}</div>
+        <div class="item-price">{{ item.price | currency }}</div>
+        <div class="item-quantity">Quantity: {{ item.quantity }}</div>
+        <button class="remove-item" (click)="removeItem(item._id, item.quantity)">Remove Item</button>
+      </div>
+    </div>
   </div>
   <div class="order-summary">
-      <h3>Order Summary</h3>
-      <div class="summary-row total">
-          <div class="summary-title">Total</div>
-          <div class="summary-amount">{{ total | currency }}</div>
-      </div>
-      <button class="btn-payment" (click)="openPaymentModal()">Continue to payment</button>
+    <h3>Order Summary</h3>
+    <div class="summary-row total">
+    <div class="summary-title">Total</div>
+    <div class="summary-amount">{{ total | currency }}</div>
+  </div>
+  <button class="btn-payment" (click)="openPaymentModal()">Continue to payment</button>
   </div>
 </div>
 <ng-template #noItems>
@@ -27,3 +27,4 @@
 </ng-template>
 
 
+<app-payment-modal *ngIf="showPaymentModal" (paymentSuccessEvent)="onPaymentSuccess()" (closeModalEvent)="showPaymentModal=false"></app-payment-modal>

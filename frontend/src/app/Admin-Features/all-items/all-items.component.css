@@ -5,7 +5,7 @@
   padding: 50px;
   justify-items: center;
   background-color: #c9d6ff;
-  background: linear-gradient(to right, #c3f1f7, #c9d6ff);
+  background: linear-gradient(to left,#c9d6ff, #8decdd);
 }
 
 
@@ -28,7 +28,7 @@
 .item img {
   width: 100%;
   height: 245px;
-  object-fit: cover;
+  object-fit: contain;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
 }
@@ -39,6 +39,7 @@
   height: 49.5%;
   border-radius: 8px;
   background: linear-gradient(to right,#c9d6ff, #ab94e3);
+  object-fit: contain;
 }
 
 h3 {
@@ -63,6 +64,7 @@ h3 {
   font-size: 68px; 
   font-weight: bold; 
   margin-right: auto;
+  color: #000000;
 }
 
 .search-sort-bar input[type="search"] {
