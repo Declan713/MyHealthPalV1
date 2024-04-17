@@ -34,68 +34,76 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      const credentials = this.loginForm.value;
-      this.authService.login(credentials.email, credentials.password).subscribe({
-        next: (response: any) => {
-          console.log('Login Successful', response);
-          localStorage.setItem('currentUserToken', JSON.stringify(response));
-          this.authService.setLoggedInUser(response);
-          
-          switch(response.role) {
-            case 'admin':
-              this.router.navigate(['/adminHome']);
-              break;
-            case 'user':
-              this.router.navigate(['/home']);
-              break;
-            case 'GP':
-              this.router.navigate(['/gpHome']);
-              break;
-            default:
-              this.errorMessage = 'Role not recognised, contact support.';
-              this.isLoading = false;
-              this.loginForm.enable();
-              return;
-          }
-        },
-        error: (error) => {
-          this.errorMessage = 'Invalid username or password';
-          this.isLoading = false;
-        }
-      });
+    this.isLoading = true;
+    if (!this.loginForm.valid) {
+      this.errorMessage = 'Please fill out all fields correctly.';
+      this.isLoading = false;
+      return;
     }
+
+    const credentials = this.loginForm.value;
+    this.authService.login(credentials.email, credentials.password).subscribe({
+      next: (response: any) => {
+        console.log('Login Successful', response);
+        localStorage.setItem('currentUserToken', JSON.stringify(response));
+        this.authService.setLoggedInUser(response);
+
+        switch(response.role) {
+          case 'admin':
+            this.router.navigate(['/adminHome']);
+            break;
+          case 'user':
+            this.router.navigate(['/home']);
+            break;
+          case 'GP':
+            this.router.navigate(['/gpHome']);
+            break;
+          default:
+            this.errorMessage = 'Role not recognised, contact support.';
+            this.isLoading = false;
+            this.loginForm.enable();
+            return;
+        }
+      },
+      error: (error) => {
+        this.errorMessage = 'Invalid username or password';
+        this.isLoading = false;
+        this.loginForm.enable();
+      }
+    });
   }
 
   onRegister() {
-    if (this.registerForm.valid) {
-      const newUser = this.registerForm.value;
-      this.authService.register(newUser).subscribe({
-        next: (response) => {
-          localStorage.setItem('currentUserToken', JSON.stringify(response));
-          this.authService.setLoggedInUser(response);
-
-          switch(response.role) {
-            case 'admin':
-              this.router.navigate(['/adminHome']);
-              break;
-            case 'user':
-              this.router.navigate(['/home']);
-              break;
-            case 'GP':
-              this.router.navigate(['/gpHome']);
-              break;
-            default:
-              this.regErrorMessage = 'Role not recognised, contact support.';
-              return;
-          }
-        },
-        error: (error) => {
-          this.regErrorMessage = 'Registration failed. Please try again.';
-        }
-      });
+    if (!this.registerForm.valid) {
+      this.regErrorMessage = 'Please fill out all fields correctly.';
+      return;
     }
+
+    const newUser = this.registerForm.value;
+    this.authService.register(newUser).subscribe({
+      next: (response) => {
+        localStorage.setItem('currentUserToken', JSON.stringify(response));
+        this.authService.setLoggedInUser(response);
+
+        switch(response.role) {
+          case 'admin':
+            this.router.navigate(['/adminHome']);
+            break;
+          case 'user':
+            this.router.navigate(['/home']);
+            break;
+          case 'GP':
+            this.router.navigate(['/gpHome']);
+            break;
+          default:
+            this.regErrorMessage = 'Role not recognised, contact support.';
+            return;
+        }
+      },
+      error: (error) => {
+        this.regErrorMessage = 'Registration failed. Please try again.';
+      }
+    });
   }
 
   toggleView() {

@@ -13,6 +13,7 @@
     justify-content: center;
     flex-direction: column;
     height: 79vh;
+    margin-top: 2%;
 }
 
 .container{
@@ -58,6 +59,7 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
     margin-top: 10px;
+    margin-bottom: 17px;
     cursor: pointer;
 }
 
@@ -194,4 +196,11 @@
 
 .container.active .toggle-right{
     transform: translateX(200%);
+}
+
+.error {
+    color: #ff0000;
+    font-size: 12px;
+    margin-top: -5px;
+    margin-bottom: 10px;
 }

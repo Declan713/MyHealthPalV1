@@ -5,25 +5,41 @@
                 <h1>Create Account</h1>
                 <span>or use your email for registration</span>
                 <input type="text" placeholder="Name" formControlName="name">
+                <div *ngIf="registerForm.get('name')?.errors && registerForm.get('name')?.touched" class="error">
+                    <small>Name is required.</small>
+                </div>
                 <input type="email" placeholder="Email" formControlName="email">
-                <input type="text" placeholder="medicalNumber" formControlName="medicalNumber">
+                <div *ngIf="registerForm.get('email')?.errors && registerForm.get('email')?.touched" class="error">
+                    <small>Please enter a valid email.</small>
+                </div>
+                <input type="text" placeholder="Medical Number" formControlName="medicalNumber">
+                <div *ngIf="registerForm.get('medicalNumber')?.errors && registerForm.get('medicalNumber')?.touched" class="error">
+                    <small>Medical number is required.</small>
+                </div>
                 <input type="password" placeholder="Password" formControlName="password">
+                <div *ngIf="registerForm.get('password')?.errors && registerForm.get('password')?.touched" class="error">
+                    <small>Password must be at least 3 characters long.</small>
+                </div>
                 <button type="submit">Sign Up</button>
                 <div *ngIf="regErrorMessage" class="error">{{ regErrorMessage }}</div>
             </form>
         </div>
-
         <div class="form-container sign-in" *ngIf="!isActive">
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <h1>Sign In</h1>
                 <span>via your email and password</span>
                 <input type="email" placeholder="Email" formControlName="email">
+                <div *ngIf="loginForm.get('email')?.errors && loginForm.get('email')?.touched" class="error">
+                    <small>Please enter a valid email.</small>
+                </div>
                 <input type="password" placeholder="Password" formControlName="password">
+                <div *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched" class="error">
+                    <small>Password is required.</small>
+                </div>
                 <button type="submit">Sign In</button>
                 <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
             </form>
         </div>
-
         <div class="toggle-container" (click)="toggleView()">
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
@@ -33,10 +49,10 @@
                 </div>
                 <div class="toggle-panel toggle-right">
                     <h1>Hello, Friend!</h1>
-                    <p>Enter your personal details and start journey with us</p>
+                    <p>Enter your personal details and start your journey with us</p>
                     <button class="ghost" id="signUp">Sign Up</button>
                 </div>
             </div>
         </div>
-  </div>
+    </div>
 </div>
