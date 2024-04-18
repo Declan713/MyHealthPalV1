@@ -21,7 +21,7 @@ p {
 .gp-card {
     display: flex;
     align-items: center;
-    background-color: rgb(255, 255, 255);
+    background: linear-gradient(to left,#ffffff, #8decdd);
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 10px;

@@ -38,4 +38,21 @@ export class UserAppointmentsComponent implements OnInit {
       }
     });
   }
+
+
+  deleteAppointment(appointmentId: string): void {
+    this.isLoading = true;
+    this.apiService.deleteAppointment(appointmentId).subscribe({
+      next: () => {
+        this.appointments = this.appointments.filter(app => app._id !== appointmentId);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Failed to delete appointment:', error);
+        this.errorMessage = `Failed to delete appointment: ${error}`;
+        this.isLoading = false;
+      }
+    });
+  }
+
 }

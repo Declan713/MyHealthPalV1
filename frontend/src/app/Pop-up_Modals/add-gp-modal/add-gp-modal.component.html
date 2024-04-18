@@ -1,0 +1,35 @@
+<div class="modal">
+    <div class="modal-content">
+        <h2>Add New Gp</h2>
+        <form #addItemForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" [(ngModel)]="Gp.name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="spec">Specialisation:</label>
+                <input type="text" id="spec" [(ngModel)]="Gp.specialisation" name="spec" required>
+            </div>
+            <div class="form-group">
+                <label for="contactNumber">Contact Number:</label>
+                <input type="text" id="contactNumber" [(ngModel)]="Gp.contactNumber" name="contactNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Medical Numbers:</label>
+                <input type="text" id="medicalNumbers" [(ngModel)]="Gp.medicalNumbers" name="medicalNumbers">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" [(ngModel)]="Gp.password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" [(ngModel)]="Gp.email" name="email" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Add Gp</button>
+                <button type="button" (click)="closeModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

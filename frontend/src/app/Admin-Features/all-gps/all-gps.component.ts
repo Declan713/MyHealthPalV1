@@ -9,6 +9,7 @@ import { ApiService } from '../../api.service';
 export class AllGpsComponent implements OnInit {
   gps: any[] = [];
   showEditModal = false;
+  showAddGpModal = false;
   selectedGp: any = {}
 
   constructor(private apiService: ApiService) {}
@@ -46,6 +47,27 @@ export class AllGpsComponent implements OnInit {
     });
   }
 
+  openAddGpModal() {
+    console.log('Opening add Gp Modal...')
+    this.showAddGpModal = true;
+    console.log('Modal State:', this.showAddGpModal);
+  }
+
+  addGp(newGp: any) {
+    console.log('Added Gp:', newGp);
+    this.apiService.addGp(newGp).subscribe({
+      next: (response) => {
+        console.log('Gp added', response);
+        this.showAddGpModal = false;
+        this.fetchGPs();
+      },
+      error: (error) => {
+        console.error('Error adding Gp', error);
+        this.showAddGpModal = false;
+      }
+    });
+  }
+
   deleteGp(gpId: string) {
     if(confirm('Are you sure you want to delete this GP?')) {
       this.apiService.deleteGp(gpId).subscribe({
@@ -57,11 +79,6 @@ export class AllGpsComponent implements OnInit {
       });
     }
   }
-
-
-
-
-
 
 
 }

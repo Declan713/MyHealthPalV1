@@ -1,5 +1,17 @@
-body {
+/* body {
     background-color: #c9d6ff;
     background: linear-gradient(to left,#c9d6ff, #8decdd);
+    color: #ffffff;
+} */
+body, html {
+    height: 100%;
+}
+  
+body {
+    background-image: url('http://localhost:5000/static/background_img/background_image.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
     color: #ffffff;
 }

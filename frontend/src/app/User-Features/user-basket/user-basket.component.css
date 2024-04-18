@@ -123,12 +123,14 @@ h3 {
 .no-items {
     text-align: center;
     margin-top: 1rem;
+    color: #000000;
+    font-size: 26px;
 }
 
 .item-count {
     color: #888;
-    font-size: 0.9rem;
-    margin-left: 0.5rem;
+    font-size: 18px;
+    margin-left: 6px;
 }
 
 /* Responsive design */

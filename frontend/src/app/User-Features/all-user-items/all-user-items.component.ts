@@ -1,6 +1,7 @@
 import { Component,  OnInit} from '@angular/core';
 import { ApiService } from '../../api.service';
 
+
 @Component({
   selector: 'app-all-user-items',
   templateUrl: './all-user-items.component.html',
@@ -8,12 +9,12 @@ import { ApiService } from '../../api.service';
 })
 export class AllUserItemsComponent implements OnInit {
   items: any[] = [];
-  filteredItems: any[] = [];
   page: number = 1;
   hasMoreData: boolean = true;
   sortDirection: 'asc' | 'desc' = 'asc';
   showAddItemModal = false; 
-  searchTerm: string = '';
+  searchQuery: string = '';
+  category: string = '';
 
   constructor(private apiService: ApiService) {}
 
@@ -37,14 +38,22 @@ export class AllUserItemsComponent implements OnInit {
     this.loadItems();
   }
 
-  filterItems() {
-    this.filteredItems = this.items.filter(item => 
-      item.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
-  }
+ 
 
-  onSearchTermChange() {
-    this.filterItems();
+  onSearchItem() {
+    if (this.searchQuery) {
+      this.apiService.searchItems(this.searchQuery, this.category).subscribe({
+        next: (response) => {
+          this.items = response.results;
+          this.hasMoreData = false;
+        },
+        error: (error) => console.error('Failed to fetch items:', error)
+      });
+    } else {
+      this.loadItems();
+    }
   }
+  
 
   
   previousPage() {

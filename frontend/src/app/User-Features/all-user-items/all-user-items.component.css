@@ -4,8 +4,7 @@
     gap: 20px;
     padding: 50px;
     justify-items: center;
-    background-color: #c9d6ff;
-    background: linear-gradient(to left,#c9d6ff, #8decdd);
+    /* background: linear-gradient(to left,#c9d6ff, #8decdd); */
 }
   
 
@@ -52,7 +51,7 @@ h3 {
 /* Search and Sorting Bar Styles */
 .search-sort-bar {
     display: flex;
-    justify-content: space-between; 
+    /* justify-content: space-between;  */
     align-items: center; 
     padding-top: 61px;
     padding-bottom: 3px;
@@ -63,7 +62,7 @@ h3 {
 .Title {
     font-size: 68px; 
     font-weight: bold; 
-    margin-right: auto;
+    margin-right: 50%;
     color: #000000;
 }
 

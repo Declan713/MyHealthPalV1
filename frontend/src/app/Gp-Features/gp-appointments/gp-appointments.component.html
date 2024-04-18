@@ -4,11 +4,10 @@
         <div class="appointment-item" *ngFor="let appointment of appointments">
             <div class="appointment-details">
                 <div class="appointment-date"><strong>Date: </strong>{{ appointment.dateTime | date: 'medium' }}</div>
-                <div class="appointment-gp"><strong>GP: </strong>{{ appointment.gpName }}</div>
+                <div class="appointment-user"><strong>Patients Name: </strong>{{ appointment.userName }}</div>
                 <div class="appointment-status"><strong>Status: </strong> {{ appointment.status }}</div>
-                <button *ngIf="appointment.status === 'declined'" class="deleteButton" (click)="deleteAppointment(appointment._id)">
-                    Delete Appointment
-                </button>
+                <button class="editButton" (click)="updateAppointmentStatus(appointment._id, 'accepted')">Accept Appointment</button>
+                <button class="editButton" (click)="updateAppointmentStatus(appointment._id, 'declined')">Decline Appointment</button>
             </div>
         </div>
     </div>

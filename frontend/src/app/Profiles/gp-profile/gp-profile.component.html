@@ -1,1 +1,19 @@
-<p>gp-profile works!</p>
+<div class="account-container">
+    <div class="gp-icon">
+        <h2>Welcome, {{ gpProfile?.name }}!</h2>
+        <img *ngIf="gpProfile?.avatar" [src]="'http://127.0.0.1:5000/static/icons/' + gpProfile.avatar" alt="Gp Icon">
+    </div>
+    <div class="account-details">
+        <p><strong>Email:</strong> {{ gpProfile?.email }}</p>
+        <p><strong>Medical Numbers:</strong> {{ gpProfile?.medicalNumbers }}</p>
+        <p><strong>Specialisation</strong> {{ gpProfile?.specialisation }}</p>
+        <p><strong>Contact Number:</strong> {{ gpProfile?.contactNumber }}</p>
+        <p><strong>Role:</strong> {{ gpProfile?.role }}</p>
+        <div *ngIf="isLoading">
+            <p>Loading profile...</p>
+        </div>
+        <div *ngIf="error">
+            <p class="error">{{ error }}</p>
+        </div>
+    </div>
+</div>

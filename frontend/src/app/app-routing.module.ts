@@ -14,6 +14,7 @@ import { AdminProfileComponent } from "./Profiles/admin-profile/admin-profile.co
 
 import { GPHomeComponent } from "./Homes/gp-home/gp-home.component";
 import { GpProfileComponent } from "./Profiles/gp-profile/gp-profile.component";
+import { GpAppointmentsComponent } from "./Gp-Features/gp-appointments/gp-appointments.component";
 
 import { HomeComponent } from "./Homes/user-home/user-home.component";
 import { UserProfileComponent } from "./Profiles/user-profile/user-profile.component";
@@ -50,7 +51,9 @@ export const routes: Routes = [
     { path: 'user-booking', component: UserBookingComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'user'}},
 
     // GP Only Page Paths
-    {path: 'gp-profile', component: GpProfileComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}}
+    {path: 'gp-profile', component: GpProfileComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}},
+    {path: 'gp-appointments', component: GpAppointmentsComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}}
+
 
 
   

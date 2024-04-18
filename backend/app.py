@@ -143,6 +143,10 @@ def register():
 def serve_image(filename):
     return send_from_directory('static/icons', filename)
 
+@app.route('/static/background_img/<path:filename>')
+def serve_background_image(filename):
+    return send_from_directory('static/background_img', filename)
+
 @app.route('/static/item_images/<path:filename>')
 def serve_item_image(filename):
     return send_from_directory('static/item_images', filename)
@@ -200,71 +204,65 @@ def get_item(item_id):
 
 
 # Search for item
+@app.route("/items/search", methods=["GET"])
+def search_items():
+    try:
+        search_query = request.args.get("searchQuery", "")
+        category = request.args.get("category", "")
 
+        # Build the search filter
+        search_filter = {}
+        if search_query:
+            search_filter["$text"] = {"$search": search_query}
+        if category:
+            search_filter["category"] = {"$regex": f"^{category}$", "$options": "i"}
+
+        # Perform the search
+        if search_filter:
+            search_result = list(items_collection.find(search_filter))
+        else:
+            # If no search filters are provided, return all items
+            search_result = list(items_collection.find())
+
+        # Convert ObjectId to string for serialization
+        search_result = [{
+            "_id": str(item["_id"]),
+            "name": item["name"],
+            "item_image": item["item_image"],
+            "category": item["category"],
+            "description": item["description"],
+            "price": item["price"],
+            "stock_quantity": item["stock_quantity"],
+            "item_reviews": item.get("item_reviews", [])
+        } for item in search_result]
+
+        return jsonify({"results": search_result}), 200
+
+    except Exception as e:
+        print(f"Error searching items: {e}")
+        return jsonify({"message": "An error occurred while searching items"}), 500
 
 #####################################################################################################
 ###########################(GP Feature)##############################################################
 
 # View GP Profile/Account
-@app.route('/gp/profile/<gp_id>', methods=['GET'])
+@app.route('/gp/profile', methods=['GET'])
 @jwt_required
-def view_gp_profile(gp_id):
+def view_gp_profile():
     # Convert gp_id from string to ObjectId to query MongoDB
-    gp_object_id = ObjectId(gp_id)
+    current_gp_id = ObjectId(request.current_user['user_id'])
     
     # Find the GP in the database by ID
-    gp = GPS_collection.find_one({'_id': gp_object_id})
-
+    gp = GPS_collection.find_one({'_id': current_gp_id})
     if gp:
-        # Convert MongoDB's ObjectId to string for JSON serialization
+        # Convert ObjectId to string 
         gp['_id'] = str(gp['_id'])
         
-        # Remove sensitive information, if any, before sending it to the client
+        # Takes out sensitive info like user passwords
         gp.pop('password', None)
-
         return jsonify(gp), 200
     else:
         return jsonify({"error": "GP not found"}), 404
-
-
-
-# Edit GP Profile/Account
-@app.route('/gp/edit_profile/<gp_id>', methods=['PUT'])
-@jwt_required
-def edit_gp_profile(gp_id):
-    # Ensure the user requesting the edit is the GP or an admin
-    current_user_id = request.current_user['user_id']
-    current_user_role = request.current_user['role']
-    gp_object_id = ObjectId(gp_id)
-
-    # Only allow the GP or an admin to edit the profile
-    if str(gp_object_id) != current_user_id and current_user_role != 'admin':
-        return jsonify({"error": "Unauthorized"}), 403
-
-    data = request.json
-
-    # Validate the input data as needed
-    # Example: Ensure 'name' and 'contactNumber' are present if they are required fields
-    update_data = {}
-    if 'name' in data:
-        update_data['name'] = data['name']
-    if 'specialisation' in data:
-        update_data['specialisation'] = data['specialisation']
-    if 'contactNumber' in data:
-        update_data['contactNumber'] = data['contactNumber']
-    # Add more fields as necessary
-
-    if not update_data:
-        return jsonify({"error": "No valid fields provided for update"}), 400
-
-    # Update the GP document in the database
-    result = GPS_collection.update_one({'_id': gp_object_id}, {'$set': update_data})
-
-    if result.matched_count:
-        return jsonify({"message": "GP profile updated successfully"}), 200
-    else:
-        return jsonify({"error": "GP not found or update failed"}), 404
-
 
 
 # Edit Appointment i.e change from pending to accepted/confirmed
@@ -313,22 +311,24 @@ def edit_appointment_status(appointment_id):
 @jwt_required
 def get_gp_appointments():
     if request.current_user['role'] == 'GP':
-        gp_id = ObjectId(request.current_user['user_id'])
-
-        # Retrieve appointments for the specified GP
-        gp_appointments = Appointments_collection.find({"gpId": gp_id})
-
-        # Convert MongoDB cursor to a list and handle ObjectId serialization
-        appointments_list = []
-        for appointment in gp_appointments:
-            appointment['_id'] = str(appointment['_id'])
-            appointment['userId'] = str(appointment['userId'])
-            appointment['gpId'] = str(appointment['gpId'])
-            appointments_list.append(appointment)
-
-        return jsonify(appointments_list)
-    else:
-        return jsonify({"error": "Unauthorized access"}), 403
+        try:
+            gp_id = ObjectId(request.current_user['user_id'])
+            
+            # Retrieve appointments for the specified Gp
+            gp_appointments = Appointments_collection.find({"gpId": gp_id})
+            
+            # Convert MongoDB cursor to a list and handle ObjectId serialization
+            appointments_list = []
+            for appointment in gp_appointments:
+                # Fetch User details for each appointment
+                user_details = users_collection.find_one({"_id": appointment['userId']})
+                if user_details:
+                    appointment['userName'] =user_details.get('name', 'Unknown User')
+                appointments_list.append(appointment)
+            
+            return jsonify(appointments_list), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
 #######################################################################################################
 ###########################(User Feature)##############################################################
@@ -342,7 +342,7 @@ def getUserProfile():
 
     user = users_collection.find_one({'_id': current_user_id})
     if user:
-        # Convert Object to string
+        # Convert ObjectId to string
         user['_id'] = str(user['_id'])
 
         # Takes out sensitive info like user passwords
@@ -654,6 +654,36 @@ def book_appointment():
     except Exception as e:
         logging.exception("Failed to process the appointment booking")
         return jsonify({"error": str(e)}), 400
+    
+
+# Delete/Clear appointment if declined by GP
+@app.route('/appointments/delete_declined/<appointment_id>', methods=['DELETE'])
+@jwt_required
+def delete_declined_appointment(appointment_id):
+    current_user_id = ObjectId(request.current_user['user_id'])
+
+    try:
+        appointment = Appointments_collection.find_one({'_id': ObjectId(appointment_id)})
+        if not appointment:
+            return jsonify({"error": "Appointment not found"}), 404
+
+        # Check if the current user is the owner of the appointment
+        if appointment['userId'] != current_user_id:
+            return jsonify({"error": "Unauthorized access"}), 403
+        
+        # Check if the appointment is declined
+        if appointment['status'] != 'declined':
+            return jsonify({"error": "Only declined appointments can be deleted"}), 400
+
+        # Perform the deletion if the status is declined
+        result = Appointments_collection.delete_one({'_id': ObjectId(appointment_id)})
+        if result.deleted_count:
+            return jsonify({"message": "Appointment deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Failed to delete appointment"}), 500
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 # Purchase Items
 @app.route('/purchase', methods=['POST'])
@@ -933,11 +963,20 @@ def delete_item(item_id):
 @jwt_required
 def add_gp():
     if request.current_user.get('role') != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
 
     data = request.json
-    hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
-
+    required_fields = ['name', 'specialisation', 'contactNumber', 'email', 'password']
+    if not all(field in data for field in required_fields):
+        return jsonify({"error": "Missing required fields"}), 400
+    
+    # Hash the password that is given
+    try:
+        hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+    except Exception as e:
+        return jsonify({"error": "Error hashing password", "details": str(e)}), 500
+    
+    # Data that will be put into the Gps collection
     new_gp = {
         "name": data.get('name'),
         "specialisation": data.get('specialisation'),
@@ -945,9 +984,10 @@ def add_gp():
         "medicalNumbers": data.get('medicalNumbers', []),
         "email": data.get('email'),
         "password": hashed_password,
-        "role": "GP"
+        "admin": False,
+        "role": "GP",
+        "avatar": data.get('avatar', 'man.png')
     }
-
     GPS_collection.insert_one(new_gp)
     return jsonify({"message": "GP added successfully"}), 201
 
@@ -956,9 +996,9 @@ def add_gp():
 @app.route('/admin/edit_gp/<gp_id>', methods=['PUT'])
 @jwt_required
 def edit_gp(gp_id):
-    print(f"Editing GP ID: {gp_id}")
+    # print(f"Editing GP ID: {gp_id}")
     if request.current_user.get('role') != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
     
     try:
         gp_id = ObjectId(gp_id)

@@ -27,12 +27,18 @@ import { UserAppointmentsComponent } from './User-Features/user-appointments/use
 import { UserBasketComponent } from './User-Features/user-basket/user-basket.component';
 import { UserBookingComponent } from './User-Features/user-booking/user-booking.component';
 
+// GP Imports
+import { GpProfileComponent } from './Profiles/gp-profile/gp-profile.component';
+import { GpAppointmentsComponent } from './Gp-Features/gp-appointments/gp-appointments.component';
+
 
 // Pop-up Modal Imports
 import { EditUserModalComponent } from './Pop-up_Modals/edit-user-modal/edit-user-modal.component';
 import { EditGpModalComponent } from './Pop-up_Modals/edit-gp-modal/edit-gp-modal.component';
+import { AddGpModalComponent } from './Pop-up_Modals/add-gp-modal/add-gp-modal.component';
 import { AddItemModalComponent } from './Pop-up_Modals/add-item-modal/add-item-modal.component';
 import { PaymentModalComponent } from './Pop-up_Modals/payment-modal/payment-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -50,8 +56,11 @@ import { PaymentModalComponent } from './Pop-up_Modals/payment-modal/payment-mod
     UserAppointmentsComponent,
     UserBasketComponent,
     UserBookingComponent,
+    GpProfileComponent,
+    GpAppointmentsComponent,
     EditUserModalComponent,
     EditGpModalComponent,
+    AddGpModalComponent,
     AddItemModalComponent,
     PaymentModalComponent,
   ],

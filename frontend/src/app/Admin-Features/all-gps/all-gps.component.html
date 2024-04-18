@@ -10,7 +10,7 @@
       <p><strong>Name:</strong> {{ gp.name }}</p>
       <p><strong>Specialisation:</strong> {{ gp.specialisation}}</p>
       <p><strong>Contact Number:</strong> {{ gp.contactNumber}}</p>
-      <p><strong>Medical Numbers:</strong> {{ gp.medicalNumber}}</p>
+      <p><strong>Medical Numbers:</strong> {{ gp.medicalNumbers.join(', ') }}</p>
       <p><strong>Email:</strong> {{ gp.email}}</p>
     </div>
     <div class="gp-actions">
@@ -19,10 +19,10 @@
     </div>
   </div>
   <div class="gp-action">
-    <button class="add-gp">Create a New GP</button>
+    <button class="add-gp" (click)="openAddGpModal()">Create a New GP</button>
   </div>
 </div>
 
 
 <app-edit-gp-modal *ngIf="showEditModal" [gp]="selectedGp" (updateGp)="editGp($event)" (closeModalEvent)="showEditModal=false"></app-edit-gp-modal>
-
+<app-add-gp-modal *ngIf="showAddGpModal" (addGp)="addGp($event)" (closeModalEvent)="showAddGpModal=false"></app-add-gp-modal>

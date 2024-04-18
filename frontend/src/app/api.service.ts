@@ -20,6 +20,12 @@ export class ApiService {
     });
   }
 
+  private handleErrors(error: HttpErrorResponse) {
+    console.error('An error occurred:', error.error.message);
+    return throwError(() => new Error(error.error.message || 'Server error'));
+  }
+
+
   ///Routes////
 
   // Get all items
@@ -30,18 +36,30 @@ export class ApiService {
       .set('sort', sort)
       .set('dir', dir);
   
-    return this.http.get(`${this.apiUrl}/items`, { headers: this.getHeaders(), params: params });
+    return this.http.get(`${this.apiUrl}/items`, { headers: this.getHeaders(), params: params })
+    .pipe(catchError(this.handleErrors));
   }
 
 
   // Get one item
   getItem(itemId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/items/${itemId}`, { headers: this.getHeaders() });
+    return this.http.get(`${this.apiUrl}/items/${itemId}`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Delete item review
   deleteReview(itemId: string, reviewId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/items/${itemId}/reviews/${reviewId}`, { headers: this.getHeaders() });
+    return this.http.delete(`${this.apiUrl}/items/${itemId}/reviews/${reviewId}`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
+  }
+
+  // Search Item
+  searchItems(query: string, category:string): Observable<any> {
+    let params = new HttpParams()
+    .set('searchQuery', query)
+    .set('category', category);
+    return this.http.get(`${this.apiUrl}/items/search`, { headers: this.getHeaders(), params: params })
+    .pipe(catchError(this.handleErrors));
   }
 
 
@@ -50,52 +68,62 @@ export class ApiService {
 
   // Fetch all users
   getAllUsers(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/admin/users`, { headers: this.getHeaders() });
+    return this.http.get(`${this.apiUrl}/admin/users`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
   
   // Edit a user
   editUser(userId: string, userData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/admin/edit_user/${userId}`, userData, { headers: this.getHeaders() });
+    return this.http.put(`${this.apiUrl}/admin/edit_user/${userId}`, userData, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Delete a user
   deleteUser(userId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/admin/delete_user/${userId}`, { headers: this.getHeaders() });
+    return this.http.delete(`${this.apiUrl}/admin/delete_user/${userId}`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Fetch all GPs
   getAllGPs(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/gps`, { headers: this.getHeaders() });
+    return this.http.get(`${this.apiUrl}/gps`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Edit a GP
   editGp(gpId: string, gpData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/admin/edit_gp/${gpId}`, gpData, { headers: this.getHeaders() });
+    return this.http.put(`${this.apiUrl}/admin/edit_gp/${gpId}`, gpData, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Delete a GP 
   deleteGp(gpId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/admin/delete_gp/${gpId}`, { headers: this.getHeaders() });
+    return this.http.delete(`${this.apiUrl}/admin/delete_gp/${gpId}`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
    // Add a GP
    addGp(gpData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/admin/add_gp`, gpData, { headers: this.getHeaders() });
+    return this.http.post(`${this.apiUrl}/admin/add_gp`, gpData, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // View Admin Account
   getAdminProfile(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/admin/profile`, { headers: this.getHeaders() });
+    return this.http.get(`${this.apiUrl}/admin/profile`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Add New Item
   addItem(itemData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/admin/add_item`, itemData, { headers: this.getHeaders() });
+    return this.http.post(`${this.apiUrl}/admin/add_item`, itemData, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Delete a Item
   deleteItem(itemId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/admin/delete_item/${itemId}`, { headers: this.getHeaders() });
+    return this.http.delete(`${this.apiUrl}/admin/delete_item/${itemId}`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
    ///////////////////////////////////////
@@ -104,29 +132,34 @@ export class ApiService {
   // add item to basket 
   addToBasket(itemId: string): Observable<any> {
     const item = {_id: itemId};
-    return this.http.post(`${this.apiUrl}/user/basket/add`, item, { headers: this.getHeaders() });
+    return this.http.post(`${this.apiUrl}/user/basket/add`, item, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Get Basket Item Count
   getBasketCount(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/user/basket/count`, { headers: this.getHeaders() });
+    return this.http.get(`${this.apiUrl}/api/user/basket/count`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // View Basket
   viewBasket(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/user/basket`, { headers: this.getHeaders() });
+    return this.http.get(`${this.apiUrl}/user/basket`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Remove Item or decrease item quantity from Basket
   updateBasket(itemId: string, decrement: number): Observable<any> {
     const body = { _id: itemId, quantity: decrement };
     // console.log(`Sending request to ${this.apiUrl}/user/basket/update with`, body);  
-    return this.http.post(`${this.apiUrl}/user/basket/update`, body, { headers: this.getHeaders() });
+    return this.http.post(`${this.apiUrl}/user/basket/update`, body, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // View User Account
   getUserProfile(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/user_profile`, { headers: this.getHeaders() });
+    return this.http.get(`${this.apiUrl}/user_profile`, { headers: this.getHeaders() })
+    .pipe(catchError(this.handleErrors));
   }
 
   // Book Appointment 
@@ -134,37 +167,46 @@ export class ApiService {
     const body = { medicalNumber: medicalNumber, appointment_date: appointmentDate };
     // console.log('Booking appointment with:', body);
     return this.http.post(`${this.apiUrl}/book/appointment`, body, { headers: this.getHeaders() })
-      .pipe(
-      catchError((error: HttpErrorResponse) => {
-        const errorResponse = error.error.error || 'Server error';
-        console.error('Error during booking:', errorResponse);
-        return throwError(errorResponse);
-      })
-    );
+    .pipe(catchError(this.handleErrors));
   }
 
   // View Appointments
   getUserAppointments(userId: string): Observable<any> {
-    console.log("Fetching appointments for user ID:", userId);  // Log the user ID
     return this.http.get(`${this.apiUrl}/user_appointments/${userId}`, { headers: this.getHeaders() })
-    .pipe(
-      // tap(appointments => console.log("Received appointments:", appointments)),  
-      catchError(error => {
-        // console.error('Error fetching appointments:', error);
-        return throwError(() => new Error('Failed to fetch appointments'));
-        })
-      );
+    .pipe(catchError(this.handleErrors));
+  }
+
+  // Delete Declined Appointents
+  deleteAppointment(appointmentId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/appointments/delete_declined/${appointmentId}`, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleErrors));
   }
 
   // Purchase Items in the basket
   purchaseItems(): Observable<any> {
     return this.http.post(`${this.apiUrl}/purchase`, {}, { headers: this.getHeaders() })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.error('Error during purchase:', error.message);
-          return throwError(() => new Error(error.error.message || 'Server error'));
-        })
-      );
+      .pipe(catchError(this.handleErrors));
+  }
+
+  ///////////////////////////////////////
+  /////////GP Routes///////////////////
+
+  // View GP Profile
+  getGpProfile(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/gp/profile`, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleErrors));
+  }
+
+  // View Gp Appointments
+  getGpAppointments(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/gp_appointments`, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleErrors));
+  }
+
+  // Edit Appointments
+  editAppointmentStatus(appointmentId: string, status: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/appointments/edit_status/${appointmentId}`, { status: status }, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleErrors));
   }
 
  
