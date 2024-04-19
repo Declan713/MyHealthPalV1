@@ -5,9 +5,9 @@
         <img [src]="'http://127.0.0.1:5000/static/item_images/' + item.item_image" alt="{{ item.name }}" class="item-poster">
         <div class="item-details">
           <h2 class="item-title">{{ item.name }}</h2>
-          <p class="item-info">Description: {{ item.description }}</p>
+          <p class="item-info"><strong>Description: </strong>{{ item.description }}</p>
           <p class="item-info"><strong>Price: </strong> {{ item.price | currency }}</p>
-          <p class="item-info"><strong>Stock: </strong> {{ item.stock }}</p>
+          <p class="item-info"><strong>Stock: </strong> {{ item.stock_quantity }}</p>
           <p class="item-info"><strong>Item Category: </strong> {{ item.category }}</p>
           <button class="add-to-basket" (click)="addToBasket()"><fa-icon [icon]="faCartPlus" class="icon-inside-button"></fa-icon><span class="text-under-icon">Add to Basket</span></button>
         </div>
@@ -19,6 +19,7 @@
   <div class="row">
     <div class="col-sm-12">
       <h2 class="review-title">Item Reviews</h2>
+      <button class="add-review" (click)="openAddReviewModal()">Add Review</button>
       <div class="card-deck">
         <div class="card bg-light mb-3" *ngFor="let review of reviews">
           <div class="card-header">Review by {{ review.name }} on {{ review.date | date: 'medium' }}</div>
@@ -32,3 +33,5 @@
     </div>
   </div>
 </div>
+<app-flash-message></app-flash-message>
+<app-add-review-modal *ngIf="showAddReviewModal" (addReview)="addReview($event)" (closeModalEvent)="closeAddReviewModal()"></app-add-review-modal>

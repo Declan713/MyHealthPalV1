@@ -38,7 +38,10 @@ import { EditGpModalComponent } from './Pop-up_Modals/edit-gp-modal/edit-gp-moda
 import { AddGpModalComponent } from './Pop-up_Modals/add-gp-modal/add-gp-modal.component';
 import { AddItemModalComponent } from './Pop-up_Modals/add-item-modal/add-item-modal.component';
 import { PaymentModalComponent } from './Pop-up_Modals/payment-modal/payment-modal.component';
+import { AddReviewModalComponent } from './Pop-up_Modals/add-review-modal/add-review-modal.component';
 
+import { FlashMessageComponent } from './flash-message/flash-message.component';
+import { FlashMessageService } from './flash-message/flash-message.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +66,8 @@ import { PaymentModalComponent } from './Pop-up_Modals/payment-modal/payment-mod
     AddGpModalComponent,
     AddItemModalComponent,
     PaymentModalComponent,
+    AddReviewModalComponent,
+    FlashMessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +77,7 @@ import { PaymentModalComponent } from './Pop-up_Modals/payment-modal/payment-mod
     FormsModule,
     FontAwesomeModule,
   ],
-  providers: [],
+  providers: [FlashMessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,27 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from '../../api.service';
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
-
+import { FlashMessageService } from '../../flash-message/flash-message.service';
 
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
-  styleUrl: './item.component.css'
+  styleUrls: ['./item.component.css']
 })
 export class ItemComponent implements OnInit {
   faCartPlus = faCartPlus;
   item: any;
   reviews: any[] = [];
-  reviewForm = this.fb.group({
-    text: ['', Validators.required],
-    rating: [null, [Validators.required, Validators.min(1), Validators.max(5)]]  
-  });
+  showAddReviewModal = false;
+  
 
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private flashMessageService: FlashMessageService ) {}
 
   ngOnInit(): void {
     const itemId = this.route.snapshot.paramMap.get('id');
@@ -67,8 +64,36 @@ export class ItemComponent implements OnInit {
       this.apiService.deleteReview(itemId, reviewId).subscribe({
         next: () => {
           this.reviews = this.reviews.filter(review => review.review_id !== reviewId);
+          this.flashMessageService.showFlashMessage('Review deleted successfully!!');
         },
-        error: (error) => console.error('Failed to delete review:', error)
+        error: (error) => {
+          console.error('Failed to delete review:', error);
+          this.flashMessageService.showFlashMessage('You can only delete your own reviews!!');
+        }
+      });
+    }
+  }
+
+  openAddReviewModal() {
+    console.log('Opening add item modal...');
+    this.showAddReviewModal = true;
+    console.log('Modal state:', this.showAddReviewModal);
+  }
+
+  closeAddReviewModal() {
+    this.showAddReviewModal = false;
+  }
+
+  addReview(reviewData: any) {
+    const itemId = this.route.snapshot.paramMap.get('id');
+    if (itemId) {
+      this.apiService.addReview(itemId, reviewData).subscribe({
+        next: (response) => {
+          console.log(reviewData);
+          console.log('Review added successfully:', response);
+          this.closeAddReviewModal();
+        },
+        error: (error) => console.error('Error adding review:', error)
       });
     }
   }

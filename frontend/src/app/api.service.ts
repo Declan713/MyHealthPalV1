@@ -188,6 +188,12 @@ export class ApiService {
       .pipe(catchError(this.handleErrors));
   }
 
+  // Add Review to an Item
+  addReview(itemId: string, reviewData: { rating: number; comment: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/items/${itemId}/add_review`, reviewData, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleErrors));
+  }
+
   ///////////////////////////////////////
   /////////GP Routes///////////////////
 
