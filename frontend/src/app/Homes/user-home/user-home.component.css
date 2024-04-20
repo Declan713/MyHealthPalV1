@@ -1,4 +1,165 @@
-.user-home h1 {
-    color: #007bff;
-  }
-  
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+} 
+
+.container {
+  max-width: fit-content;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #c9d6ffba;
+  border-radius: 20px;
+  margin-top: 30px;
+  padding-bottom: 20px;
+}
+
+
+.header {
+  padding: 0 1rem;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.content {
+  color: #000000;
+}
+
+.content h1 {
+  margin-bottom: 20px;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.content h1 span {
+  font-weight: 400;
+}
+
+.content p {
+  margin-bottom: 20px;
+  line-height: 1.75rem;
+}
+
+.image {
+  position: relative;
+  text-align: center;
+  isolation: isolate;
+}
+
+.DrImage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 450px;
+  width: 450px;
+  border-radius: 100%;
+  z-index: -1;
+}
+
+.image img {
+  width: 100%;
+  max-width: 475px;
+}
+
+.mini_content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mini_box1 {
+  transform: translate(calc(-50% - 12rem), calc(-50% - 8rem));
+}
+
+.mini_box1 span {
+  padding: 10px 12px;
+  font-size: 1.5rem;
+  background-color: #0cffbe;
+  border-radius: 100%;
+}
+
+.mini_box1 h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+
+.mini_box2 {
+  transform: translate(calc(-50% + 8rem), calc(-50% + 10rem));
+}
+
+.mini_box2 ul {
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+}
+
+.mini_box2 li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.mini_box2 span {
+  font-size: 1.5rem;
+}
+
+
+.info-boxes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.info-box h3 {
+  border-bottom: 1px solid #000000;
+}
+
+.info-box {
+  background: linear-gradient(to right,#c9d6ff, #8decdd);
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 30%;
+  transition: transform 0.3s ease-in-out;
+  border-radius: 20px;
+  margin-left: 30px;
+}
+
+.info-box:hover, .info-box.active {
+  transform: scale(1.2);
+  z-index: 10;
+}
+
+.btn-get-started {
+  background-color: #5c6bc0;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 20px;
+  color: white;
+  font-size: large;
+  margin-left: 30%;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.btn-get-started:hover {
+  background-color: #8decdd;
+  color: #000000;
+}
+
+

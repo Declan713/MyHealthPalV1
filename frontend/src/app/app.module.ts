@@ -20,6 +20,7 @@ import { ViewItemComponent } from './Admin-Features/view-item/view-item.componen
 
 
 // User Imports
+import { HomeComponent } from './Homes/user-home/user-home.component';
 import { UserProfileComponent } from './Profiles/user-profile/user-profile.component';
 import { AllUserItemsComponent } from './User-Features/all-user-items/all-user-items.component';
 import { ItemComponent } from './User-Features/item/item.component';
@@ -57,6 +58,7 @@ import { FlashMessageService } from './flash-message/flash-message.service';
     UserProfileComponent,
     AllUserItemsComponent,
     ItemComponent,
+    HomeComponent,
     UserAppointmentsComponent,
     UserBasketComponent,
     UserBookingComponent,

@@ -147,6 +147,10 @@ def serve_image(filename):
 def serve_background_image(filename):
     return send_from_directory('static/background_img', filename)
 
+@app.route('/static/<path:filename>')
+def serve_imagev2(filename):
+    return send_from_directory('static', filename)
+
 @app.route('/static/item_images/<path:filename>')
 def serve_item_image(filename):
     return send_from_directory('static/item_images', filename)
