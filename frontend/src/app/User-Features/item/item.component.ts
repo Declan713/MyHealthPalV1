@@ -15,6 +15,8 @@ export class ItemComponent implements OnInit {
   item: any;
   reviews: any[] = [];
   showAddReviewModal = false;
+  showEditReviewModal = false;
+  currentReview: any;
   
 
 
@@ -74,15 +76,6 @@ export class ItemComponent implements OnInit {
     }
   }
 
-  openAddReviewModal() {
-    console.log('Opening add item modal...');
-    this.showAddReviewModal = true;
-    console.log('Modal state:', this.showAddReviewModal);
-  }
-
-  closeAddReviewModal() {
-    this.showAddReviewModal = false;
-  }
 
   addReview(reviewData: any) {
     const itemId = this.route.snapshot.paramMap.get('id');
@@ -96,6 +89,44 @@ export class ItemComponent implements OnInit {
         error: (error) => console.error('Error adding review:', error)
       });
     }
+  }
+
+  openAddReviewModal() {
+    console.log('Opening add item modal...');
+    this.showAddReviewModal = true;
+    console.log('Modal state:', this.showAddReviewModal);
+  }
+
+  closeAddReviewModal() {
+    this.showAddReviewModal = false;
+  }
+
+  editReview(reviewId: string, reviewData: any) {
+    const itemId = this.route.snapshot.paramMap.get('id');
+    if (itemId) {
+      this.apiService.editReview(itemId, reviewId, reviewData).subscribe({
+        next: (response) => {
+          console.log('Review Updated Successfully:', response);
+          this.showEditReviewModal = false;
+          this.loadItem(itemId);
+        },
+        error: (error) => {
+          console.error('Error Updating Review:', error);
+          this.showEditReviewModal = false;
+          this.flashMessageService.showFlashMessage('You can only Edit your own reviews!!');
+        }
+      });
+    }
+  }
+
+  openEditReviewModal(review: any) {
+    console.log('Opening Edit Review Modal...')
+    this.currentReview = { ...review };
+    this.showEditReviewModal = true;
+  }
+
+  closeEditReviewModal() {
+    this.showEditReviewModal = false;
   }
 
   

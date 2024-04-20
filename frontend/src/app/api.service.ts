@@ -21,7 +21,17 @@ export class ApiService {
   }
 
   private handleErrors(error: HttpErrorResponse) {
-    console.error('An error occurred:', error.error.message);
+    let errorMessage = 'Server Error';
+    if (error.error instanceof ErrorEvent) {
+      console.log('An error occurred:', error.error.message);
+      errorMessage = error.error.message;
+    } else {
+      console.error(`Backend returned code ${error.status}, body was:`, error.error);
+      errorMessage = error.message || 'Something went wrong with the request.';
+      if (error.error && error.error.message) {
+        errorMessage = error.error.message;
+      }
+    }
     return throwError(() => new Error(error.error.message || 'Server error'));
   }
 
@@ -191,6 +201,13 @@ export class ApiService {
   // Add Review to an Item
   addReview(itemId: string, reviewData: { rating: number; comment: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/items/${itemId}/add_review`, reviewData, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleErrors));
+  }
+
+  // Edit a Review 
+  editReview(itemId: string, reviewId: string, reviewData: { rating: number; comment: string }): Observable<any> {
+    // console.log(`Sending PUT request to /items/${itemId}/reviews/${reviewId}`, reviewData);
+    return this.http.put(`${this.apiUrl}/items/${itemId}/reviews/${reviewId}`, reviewData, { headers: this.getHeaders() })
       .pipe(catchError(this.handleErrors));
   }
 

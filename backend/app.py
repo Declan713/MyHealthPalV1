@@ -65,7 +65,7 @@ def jwt_required(func):
             if 'error' not in decoded_token:
                 request.current_user = decoded_token
                 return func(*args, **kwargs)
-        return jsonify({'message': 'Unauthorized access'}), 401
+        return jsonify({'message': 'Unauthorised access'}), 401
 
     return jwt_required_wrapper
 
@@ -138,7 +138,7 @@ def register():
     else:
         return jsonify({"error": "Registration failed"}), 500
 
-
+# Images used
 @app.route('/static/icons/<path:filename>')
 def serve_image(filename):
     return send_from_directory('static/icons', filename)
@@ -150,6 +150,7 @@ def serve_background_image(filename):
 @app.route('/static/item_images/<path:filename>')
 def serve_item_image(filename):
     return send_from_directory('static/item_images', filename)
+
 
 # Show all items
 @app.route('/items', methods=['GET'])
@@ -224,7 +225,7 @@ def search_items():
             # If no search filters are provided, return all items
             search_result = list(items_collection.find())
 
-        # Convert ObjectId to string for serialization
+        # Convert ObjectId to string
         search_result = [{
             "_id": str(item["_id"]),
             "name": item["name"],
@@ -274,7 +275,7 @@ def edit_appointment_status(appointment_id):
 
     # Ensure the request is made by a GP
     if request.current_user['role'] != 'GP':
-        return jsonify({"error": "Unauthorized"}), 403
+        return jsonify({"error": "Unauthorised"}), 403
 
     # Convert the appointment_id from string to ObjectId
     appointment_object_id = ObjectId(appointment_id)
@@ -317,7 +318,7 @@ def get_gp_appointments():
             # Retrieve appointments for the specified Gp
             gp_appointments = Appointments_collection.find({"gpId": gp_id})
             
-            # Convert MongoDB cursor to a list and handle ObjectId serialization
+            # Convert MongoDB cursor to a list and handle ObjectId serialisation
             appointments_list = []
             for appointment in gp_appointments:
                 # Fetch User details for each appointment
@@ -425,14 +426,14 @@ def update_basket():
     current_user_id = ObjectId(request.current_user['user_id'])
     item_id = request.json.get('_id')
 
-    # Set decrement to 1 to ensure only one unit is decremented
+    # Set decrement to 1 to ensure only one unit is reduced
     decrement = 1
 
     # logging.debug("User ID: %s", current_user_id)
     # logging.debug("Request Data: %s", request.json)
     # logging.debug("Attempting to decrement item with ID %s for user %s by %d", item_id, current_user_id, decrement)
 
-    # Update the quantity by decrementing it by one
+    # Update the quantity by reducing it by one
     result = users_collection.update_one(
         {'_id': current_user_id, 'basket._id': ObjectId(item_id)},
         {'$inc': {'basket.$.quantity': -decrement}}
@@ -442,7 +443,7 @@ def update_basket():
         logging.error("Item not found in basket or decrement not applicable: %s", item_id)
         return jsonify({"error": "Item not found in basket or decrement not applicable"}), 404
 
-    # After decrementing, find the item to check if its quantity is zero
+    # After reducing, find the item to check if its quantity is zero
     user = users_collection.find_one(
         {'_id': current_user_id, 'basket._id': ObjectId(item_id)},
         {'basket.$': 1})
@@ -503,42 +504,39 @@ def add_review(item_id):
     else:
         return jsonify({"error": "User not found"}), 404
 
-
-# Edit a Review 
+# Edit Review
 @app.route('/items/<string:item_id>/reviews/<string:review_id>', methods=['PUT'])
 @jwt_required
 def edit_review(item_id, review_id):
-
+    print(f"Editing review for item {item_id} and review {review_id}")
     current_user_id = ObjectId(request.current_user['user_id'])
 
-    # Converting into ObjectID
     item_id = ObjectId(item_id)
     review_id = ObjectId(review_id)
 
-    # Get review details from the request body
     review_data = request.json
     new_rating = review_data.get('rating')
     new_comment = review_data.get('comment')
 
-    # Find item in the database
     item = items_collection.find_one({'_id': item_id})
     if item:
-        # Find the review to be edited
-       for review in item['item_reviews']:
+        found_review = False
+        for review in item['item_reviews']:
+            print(f"Checking review {review['review_id']} for user {review['user_id']}")
             if review['review_id'] == review_id and review['user_id'] == current_user_id:
-                # Update the review details
+                found_review = True
                 review['rating'] = new_rating
                 review['comment'] = new_comment
+                break
 
-                # Update the item in the database
-                items_collection.update_one(
-                    {'_id': item_id},
-                    {'$set': {'item_reviews': item['item_reviews']}}
-                )
-
-                return jsonify({"message": "Review updated successfully"}), 200
-            
-            return jsonify({"error": "Review not found or unauthorized"}), 404
+        if found_review:
+            items_collection.update_one(
+                {'_id': item_id},
+                {'$set': {'item_reviews': item['item_reviews']}}
+            )
+            return jsonify({"message": "Review updated successfully"}), 200
+        else:
+            return jsonify({"error": "Review not found or unauthorised"}), 404
     else:
         return jsonify({"error": "Item not found"}), 404
 
@@ -571,7 +569,7 @@ def delete_review(item_id, review_id):
 
                 return jsonify({"message": "Review deleted successfully"}), 200
 
-        return jsonify({"error": "Review not found or unauthorized"}), 404
+        return jsonify({"error": "Review not found or unauthorised"}), 404
     else:
         return jsonify({"error": "Item not found"}), 404
 
@@ -669,7 +667,7 @@ def delete_declined_appointment(appointment_id):
 
         # Check if the current user is the owner of the appointment
         if appointment['userId'] != current_user_id:
-            return jsonify({"error": "Unauthorized access"}), 403
+            return jsonify({"error": "Unauthorised access"}), 403
         
         # Check if the appointment is declined
         if appointment['status'] != 'declined':
@@ -762,7 +760,7 @@ def get_user_appointments(user_id):
 def view_admin_profile():
     # Ensure the user requesting the profile is an admin
     if request.current_user.get('role') != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
 
     admin_id = ObjectId(request.current_user['user_id'])
     admin = users_collection.find_one({'_id': admin_id})
@@ -784,23 +782,24 @@ def get_all_users():
     # Check if the current user is an admin
     current_user_role = request.current_user.get('role')
     if current_user_role != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
 
-    users = users_collection.find({}, {'password': 0, 'basket': 0})  # Exclude fields like password and basket
+    users = users_collection.find({}, {'password': 0, 'basket': 0})  # Exclude fields password and basket
     users_list = list(users)
 
-    # Convert MongoDB's ObjectId to string for JSON serialization
+    # Convert MongoDB's ObjectId to string
     for user in users_list:
         user['_id'] = str(user['_id'])
 
     return jsonify(users_list)
 
+# Edit User
 @app.route('/admin/edit_user/<user_id>', methods=['PUT'])
 @jwt_required
 def edit_user(user_id):
     print(f"Editing User ID: {user_id}")
     if request.current_user.get('role') != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
 
     try:
         user_id = ObjectId(user_id)
@@ -823,13 +822,13 @@ def edit_user(user_id):
     else:
         return jsonify({"error": "User not found"}), 404
     
-
+# Delete a User
 @app.route('/admin/delete_user/<user_id>', methods=['DELETE'])
 @jwt_required
 def delete_user(user_id):
     print(f"Deleting User ID: {user_id}")
     if request.current_user.get('role') != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
     
     try:
         user_id = ObjectId(user_id)
@@ -853,11 +852,11 @@ def delete_user(user_id):
 def get_all_gps():
     current_user_role = request.current_user.get('role')
     if current_user_role != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
 
     gps = GPS_collection.find()
 
-    # Convert the GPs to a list and format for JSON serialization
+    # Convert the GPs to a list
     gps_list = []
     for gp in gps:
         gp['_id'] = str(gp['_id'])  
@@ -873,23 +872,23 @@ def get_all_gps():
 def add_item():
     # Check if the current user is an admin
     if request.current_user.get('role') != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
 
     data = request.json
 
-    # Validate the item data (you can expand this validation based on your requirements)
+    # Validate the item data
     if not data.get('name') or not data.get('price') or not data.get('stock_quantity'):
         return jsonify({"error": "Missing required item information"}), 400
 
     # Prepare the item document for insertion
     item_document = {
         "name": data.get('name'),
-        "item_image": data.get('item_image', 'default.png'),  # default image if not provided
-        "category": data.get('category', 'Unknown'),  # default category if not provided
+        "item_image": data.get('item_image', 'man.png'),  
+        "category": data.get('category', 'New-Item'), 
         "description": data.get('description', ''),
         "price": data.get('price'),
         "stock_quantity": data.get('stock_quantity'),
-        "item_reviews": []  # Initialize with an empty list of reviews
+        "item_reviews": [] 
     }
 
     # Insert the new item into the database
@@ -901,13 +900,14 @@ def add_item():
     else:
         return jsonify({"error": "Failed to add the item"}), 500
 
+
 # Edit an Item 
 @app.route('/admin/edit_item/<item_id>', methods=['PUT'])
 @jwt_required
 def edit_item(item_id):
     # Check if the current user is an admin
     if request.current_user.get('role') != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
 
     try:
         # Convert the item_id to ObjectId
@@ -941,7 +941,7 @@ def edit_item(item_id):
 def delete_item(item_id):
     # Check if the current user is an admin
     if request.current_user.get('role') != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
 
     try:
         # Convert the item_id to ObjectId
@@ -1022,12 +1022,13 @@ def edit_gp(gp_id):
     else:
         return jsonify({"error": "GP not found"}), 404
 
+
 # Delete a GP
 @app.route('/admin/delete_gp/<gp_id>', methods=['DELETE'])
 @jwt_required
 def delete_gp(gp_id):
     if request.current_user.get('role') != 'admin':
-        return jsonify({"error": "Unauthorized. Access restricted to admin users only."}), 403
+        return jsonify({"error": "Unauthorised. Access restricted to admin users only."}), 403
     
     try:
         gp_id = ObjectId(gp_id)

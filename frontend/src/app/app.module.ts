@@ -39,6 +39,7 @@ import { AddGpModalComponent } from './Pop-up_Modals/add-gp-modal/add-gp-modal.c
 import { AddItemModalComponent } from './Pop-up_Modals/add-item-modal/add-item-modal.component';
 import { PaymentModalComponent } from './Pop-up_Modals/payment-modal/payment-modal.component';
 import { AddReviewModalComponent } from './Pop-up_Modals/add-review-modal/add-review-modal.component';
+import { EditReviewModalComponent } from './Pop-up_Modals/edit-review-modal/edit-review-modal.component';
 
 import { FlashMessageComponent } from './flash-message/flash-message.component';
 import { FlashMessageService } from './flash-message/flash-message.service';
@@ -67,6 +68,7 @@ import { FlashMessageService } from './flash-message/flash-message.service';
     AddItemModalComponent,
     PaymentModalComponent,
     AddReviewModalComponent,
+    EditReviewModalComponent,
     FlashMessageComponent,
   ],
   imports: [

@@ -25,7 +25,7 @@
           <div class="card-header">Review by {{ review.name }} on {{ review.date | date: 'medium' }}</div>
           <div class="card-body">{{ review.comment }}</div>
           <div class="card-footer">{{ review.rating }} stars
-            <!-- <button class="btn btn-edit btn-sm float-right" (click)="editReview(review.review_id)">Edit</button> -->
+            <button class="btn btn-edit btn-sm float-right" (click)="openEditReviewModal(review)">Edit</button>
             <button class="btn btn-danger btn-sm float-right" (click)="deleteReview(review.review_id)">Delete</button>
           </div>
         </div>
@@ -34,4 +34,5 @@
   </div>
 </div>
 <app-flash-message></app-flash-message>
+<app-edit-review-modal *ngIf="showEditReviewModal" [reviewData]="currentReview" (editReview)="editReview(currentReview.review_id, $event)" (closeModalEvent)="closeEditReviewModal()"></app-edit-review-modal>
 <app-add-review-modal *ngIf="showAddReviewModal" (addReview)="addReview($event)" (closeModalEvent)="closeAddReviewModal()"></app-add-review-modal>
