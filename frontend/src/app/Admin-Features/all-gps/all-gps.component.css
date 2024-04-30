@@ -1,0 +1,89 @@
+.all-gps-container {
+    max-width: 70%;
+    margin: 10px auto;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to right,#c9d6ff, #8decdd);
+    border-radius: 10px;
+}
+  
+h1 {
+    color: #333;
+    text-align: center;
+}
+  
+p {
+    color: #666;
+    text-align: center;
+}
+  
+  /* User card styles */
+.gp-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(to left,#ffffff, #8decdd);
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid hsl(160, 70%, 48%);
+}
+  
+.gp-icon img {
+    width: 81px; 
+    height: 81px;
+    margin-right: 73px;
+    border: 1px solid #000000;
+    border-radius: 40px;
+}
+  
+.gp-info {
+    flex-grow: 1;
+}
+  
+.gp-actions {
+    text-align: right;
+}
+  
+.gp-actions button {
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.gp-action button {
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    margin-left: 45%;
+    cursor: pointer;
+}
+  
+.edit {
+    background-color: #4CAF50;
+    color: white;
+}
+  
+.delete {
+    background-color: #F44336; 
+    color: white;
+}
+
+.add-gp {
+    background-color: #4CAF50; 
+    color: white;
+}
+  
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .gp-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .gp-actions {
+      text-align: left;
+      margin-top: 10px;
+    }
+}

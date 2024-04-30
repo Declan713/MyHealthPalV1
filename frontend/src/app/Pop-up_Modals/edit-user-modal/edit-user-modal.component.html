@@ -1,0 +1,27 @@
+<div class="edit-user-modal">
+    <div class="modal-content">
+      <h2>Edit User</h2>
+      <form #editUserForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" [(ngModel)]="user.name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" id="email" [(ngModel)]="user.email" name="email" required> 
+        </div>
+        <div class="form-group">
+            <label for="medicalNumber">Medical Number</label>
+            <input type="text" id="medicalNumber" [(ngModel)]="user.medicalNumber" name="medicalNumber" required>
+        </div>
+        <div class="form-group">
+          <label for="avatar">Icon</label>
+          <input type="text" id="avatar" [(ngModel)]="user.avatar" name="avatar" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Save Changes</button>
+          <button type="button" (click)="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+.flash-message {
+    position: fixed;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    background-color: #000000;
+    color: red;
+    border-radius: 9px;
+    z-index: 1000;
+    text-align: center;
+    
+}

@@ -1,0 +1,27 @@
+<div class="search-sort-bar">
+    <div class="Title">Items</div>
+    <input type="search" placeholder="Search item here" [(ngModel)]="searchQuery" (ngModelChange)="onSearchItem()">
+    <div class="sort-buttons">
+      <button (click)="sortItemsAlphabetically()">Sort {{ sortDirection === 'asc' ? 'A-Z' : 'Z-A' }}</button>
+    </div>
+</div>
+  
+<div class="items-container">
+    <div *ngFor="let item of items" class="item">
+        <img [src]="'http://127.0.0.1:5000/static/item_images/' + item.item_image" alt="{{ item.name }}" style="cursor: pointer" [routerLink] = "['/view-item', item._id]">
+        <div class="item-details">
+            <h3>{{ item.name }}</h3>
+            <p><strong>Category: </strong>{{ item.category }}</p>
+            <p><strong>Stock: </strong>{{ item.stock_quantity }}</p>
+            <p><strong>Desc: </strong>{{ item.description }}</p>
+            <p><strong>Price: </strong> {{ item.price | currency }}</p>
+            <p><strong>Reviews: </strong> {{ item.item_reviews?.length || 0 }}</p>
+        </div>
+    </div>
+</div>
+  
+<div class="pagination">
+    <button (click)="previousPage()" [disabled]="page === 1">Previous</button>
+    <span class="page">Page {{ page }}</span>
+    <button (click)="nextPage()" [disabled]="!canGoNext()">Next</button>
+</div>

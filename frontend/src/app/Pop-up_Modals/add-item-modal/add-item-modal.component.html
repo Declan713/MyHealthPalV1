@@ -1,0 +1,35 @@
+<div class="modal">
+    <div class="modal-content">
+        <h2>Add New Item</h2>
+        <form #addItemForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" [(ngModel)]="item.name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" id="price" [(ngModel)]="item.price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="stock_quantity">Stock Quantity:</label>
+                <input type="number" id="stock_quantity" [(ngModel)]="item.stock_quantity" name="stock_quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="item_image">Item Image URL:</label>
+                <input type="text" id="item_image" [(ngModel)]="item.item_image" name="item_image">
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <input type="text" id="category" [(ngModel)]="item.category" name="category">
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" [(ngModel)]="item.description" name="description"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Add Item</button>
+                <button type="button" (click)="closeModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

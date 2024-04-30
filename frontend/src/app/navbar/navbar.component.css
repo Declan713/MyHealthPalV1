@@ -1,0 +1,103 @@
+.navbar {
+    background: linear-gradient(to left, #5c6bc0, #512da8);
+    padding: 10px;
+    color: #ffffff; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    height: fit-content;
+    overflow: auto;
+    top: 20px;
+}
+
+.navbar-brand a {
+    font-size: 50px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.navbar-brand {
+    z-index: 1;
+}
+
+.navbar-links {
+    font-size: 20px;
+    color: #ffffff; 
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #ffffff; 
+    margin-right: 43px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.badge {
+    margin-left: 10px;
+}
+
+.navbar a:hover {
+    color: #5c6bc0;
+}
+
+.navbar button {
+    background-color: #37f7e5;
+    color: #fff;
+    padding: 9px 17px;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.navbar button:hover {
+    background-color: #5c6bc0;
+}
+
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 5px 0;
+    transition: 0.4s;
+}
+
+.menu-toggle.active .bar:nth-child(1),
+.menu-toggle.active .bar:nth-child(3) {
+    background-color: #5c6bc0; 
+}
+
+@media (max-width: 1122px) {
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: #c9d6ff;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 0;
+    }
+
+    .navbar-links.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}

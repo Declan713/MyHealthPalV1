@@ -1,0 +1,28 @@
+<div class="all-gps-container">
+  <h1>General Practitioner</h1>
+  <p class="gp-count">GP count: {{ gps.length }}</p>
+
+  <div *ngFor="let gp of gps" class="gp-card">
+    <div class="gp-icon">
+      <img *ngIf="gp && gp.avatar" [src]="'http://127.0.0.1:5000/static/icons/' + gp.avatar" alt="User Icon">
+    </div>
+    <div class="gp-info">
+      <p><strong>Name:</strong> {{ gp.name }}</p>
+      <p><strong>Specialisation:</strong> {{ gp.specialisation}}</p>
+      <p><strong>Contact Number:</strong> {{ gp.contactNumber}}</p>
+      <p><strong>Medical Numbers:</strong> {{ gp.medicalNumbers.join(', ') }}</p>
+      <p><strong>Email:</strong> {{ gp.email}}</p>
+    </div>
+    <div class="gp-actions">
+      <button class="edit" (click)="openEditModal(gp)">Edit</button>
+      <button class="delete" (click)="deleteGp(gp._id)">Delete</button>
+    </div>
+  </div>
+  <div class="gp-action">
+    <button class="add-gp" (click)="openAddGpModal()">Create a New GP</button>
+  </div>
+</div>
+
+
+<app-edit-gp-modal *ngIf="showEditModal" [gp]="selectedGp" (updateGp)="editGp($event)" (closeModalEvent)="showEditModal=false"></app-edit-gp-modal>
+<app-add-gp-modal *ngIf="showAddGpModal" (addGp)="addGp($event)" (closeModalEvent)="showAddGpModal=false"></app-add-gp-modal>
