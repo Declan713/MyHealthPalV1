@@ -32,6 +32,9 @@ import { UserBookingComponent } from './User-Features/user-booking/user-booking.
 import { GpProfileComponent } from './Profiles/gp-profile/gp-profile.component';
 import { GpAppointmentsComponent } from './Gp-Features/gp-appointments/gp-appointments.component';
 
+// Chatbot
+import { ChatbotComponent } from './chatbot/chatbot.component';
+
 
 // Pop-up Modal Imports
 import { EditUserModalComponent } from './Pop-up_Modals/edit-user-modal/edit-user-modal.component';
@@ -72,6 +75,7 @@ import { FlashMessageService } from './flash-message/flash-message.service';
     AddReviewModalComponent,
     EditReviewModalComponent,
     FlashMessageComponent,
+    ChatbotComponent,
   ],
   imports: [
     BrowserModule,

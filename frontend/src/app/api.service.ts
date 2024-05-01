@@ -232,5 +232,11 @@ export class ApiService {
       .pipe(catchError(this.handleErrors));
   }
 
- 
+  // Chatbot
+  sendMessageToChatbot(message: string): Observable<any> {
+    const postData = { message: message };
+    return this.http.post(`${this.apiUrl}/api/chat`, postData, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleErrors));
+    
+  }
 }

@@ -1,0 +1,21 @@
+<div class="chatbot-container">
+    <div class="chatbot-bubble" (click)="toggleChatbox()">
+      <img src="http://localhost:5000/static/chatbot.png" alt="Chatbot Icon" aria-label="Open chat">
+    </div>
+
+    <div id="chatbox" class="mb-3" *ngIf="chatboxVisible" aria-label="Chatbox">
+        <div class="messages-container" #scrollMe>
+            <div *ngFor="let message of messages" class="message" [ngClass]="{'user-msg': message.sender === 'user', 'bot-msg': message.sender === 'bot'}">
+                {{ message.content }}
+                <button *ngIf="message.sender === 'bot'" (click)="speak(message.content)">🔊</button>
+            </div>
+        </div>
+        <div class="Text-SubmitBox">
+            <input type="text" class="form-control" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type a message..." aria-label="Type your message" style="width: -webkit-fill-available;">
+            <button (click)="sendMessage()" aria-label="Send message">Send</button>
+            <button (click)="toggleListening()" aria-label="Start voice input">
+                {{ isListening ? 'Stop Listening' : 'Speak' }}
+            </button>
+        </div>
+    </div>
+</div>
