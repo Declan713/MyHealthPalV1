@@ -25,6 +25,7 @@ import { ItemComponent } from "./User-Features/item/item.component";
 import { UserAppointmentsComponent } from "./User-Features/user-appointments/user-appointments.component";
 import { UserBasketComponent } from "./User-Features/user-basket/user-basket.component";
 import { UserBookingComponent } from "./User-Features/user-booking/user-booking.component";
+import { GpPatientsComponent } from "./Gp-Features/gp-patients/gp-patients.component";
 
 
 
@@ -52,7 +53,8 @@ export const routes: Routes = [
 
     // GP Only Page Paths
     {path: 'gp-profile', component: GpProfileComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}},
-    {path: 'gp-appointments', component: GpAppointmentsComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}}
+    {path: 'gp-appointments', component: GpAppointmentsComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}},
+    {path: 'gp-patients', component: GpPatientsComponent, canActivate: [AuthGuard, RoleGuard], data: {expectedRole: 'GP'}}
 
 
 

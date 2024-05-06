@@ -470,6 +470,42 @@ def get_gp_appointments():
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
+# Get a GPs Patients
+@app.route('/gp/patients', methods=['GET'])
+@jwt_required
+def get_gp_patients():
+    if request.current_user['role'] != 'GP':
+        return jsonify({"error": "Unauthorised. Access restricted to GPs only."}), 403
+
+    gp_id = ObjectId(request.current_user['user_id'])
+
+    # Fetch appointments where the current GP is involved
+    appointments = Appointments_collection.find({"gpId": gp_id})
+
+    # Extract user IDs from appointments
+    user_ids = [appointment['userId'] for appointment in appointments]
+
+    # Remove duplicates from user_ids
+    unique_user_ids = list(set(user_ids))
+
+    # Fetch user details from user IDs
+    patients = users_collection.find({"_id": {"$in": unique_user_ids}})
+
+    # Prepare the list of patient details, excluding sensitive information like passwords
+    patient_list = []
+    for patient in patients:
+        patient_info = {
+            "user_id": str(patient['_id']),
+            "name": patient.get('name'),
+            "email": patient.get('email'),
+            "medicalNumber": patient.get('medicalNumber', 'Not provided')
+        }
+        patient_list.append(patient_info)
+
+    return jsonify(patient_list), 200
+
+
+
 #######################################################################################################
 ###########################(User Feature)##############################################################
 
