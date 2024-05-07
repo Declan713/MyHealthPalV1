@@ -1,0 +1,43 @@
+[{
+  "_id": {
+    "$oid": "6605dbc5e337f919d9f5d75d"
+  },
+  "name": "Dr Nuss Bob",
+  "specialisation": "General Practitioner",
+  "contactNumber": "987-654-3233",
+  "medicalNumbers": [
+    "ABC123",
+    "ABC456"
+  ],
+  "email": "dr.smith@example.com",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJENwSmFTdE5TVDJQR3NycWJGV0I3VnVHUnk3RW8vVW96R1hFUDVieE9WNGhvN3ZRZDNsbncy",
+      "subType": "00"
+    }
+  },
+  "admin": false,
+  "role": "GP",
+  "avatar": "man.png"
+},
+{
+  "_id": {
+    "$oid": "66217d6e78b7d9f1c42ec28a"
+  },
+  "name": "DrTest",
+  "specialisation": "tester",
+  "contactNumber": "123",
+  "medicalNumbers": [
+    "BB1"
+  ],
+  "email": "DrTest@gmail.com",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJEwxbUJKaU5Qc0dqbHRHZ0V5aTAzc3U3WUZvSWdwVW5Id3czcTRXR1U2VUd0czYuRHJUOTlT",
+      "subType": "00"
+    }
+  },
+  "admin": false,
+  "role": "GP",
+  "avatar": "man.png"
+}]
