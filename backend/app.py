@@ -62,9 +62,13 @@ def jwt_required(func):
     @wraps(func)
     def jwt_required_wrapper(*args, **kwargs):
         auth_header = request.headers.get('Authorization')
+        print(f"Authorization header: {auth_header}")
         if auth_header and auth_header.startswith('Bearer '):
             token = auth_header.split(" ")[1]
+            print(f"Token extracted: {token}") 
+            
             decoded_token = decode_token(token)
+            print(f"Decoded token: {decoded_token}")
             
             if 'error' not in decoded_token:
                 request.current_user = decoded_token
