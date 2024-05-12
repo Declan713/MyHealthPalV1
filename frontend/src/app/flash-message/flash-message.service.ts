@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class FlashMessageService {
-  private flashMessage = new Subject<string>();
+  private flashMessage = new Subject<{ message: string, type: string }>();
 
   constructor() { }
 
@@ -13,8 +13,9 @@ export class FlashMessageService {
     return this.flashMessage.asObservable();
   }
 
-  showFlashMessage(message: string) {
-    this.flashMessage.next(message);
-    setTimeout(() => this.flashMessage.next(null!), 5000);
+  showFlashMessage(message: string, type: string = 'success') {
+    this.flashMessage.next({ message, type });
+    setTimeout(() => this.flashMessage.next({ message: '', type: '' }), 5000);
   }
+  
 }

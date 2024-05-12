@@ -189,26 +189,26 @@ export class ApiService {
   // Delete Declined Appointents
   deleteAppointment(appointmentId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/appointments/delete_declined/${appointmentId}`, { headers: this.getHeaders() })
-      .pipe(catchError(this.handleErrors));
+    .pipe(catchError(this.handleErrors));
   }
 
   // Purchase Items in the basket
   purchaseItems(): Observable<any> {
     return this.http.post(`${this.apiUrl}/purchase`, {}, { headers: this.getHeaders() })
-      .pipe(catchError(this.handleErrors));
+    .pipe(catchError(this.handleErrors));
   }
 
   // Add Review to an Item
   addReview(itemId: string, reviewData: { rating: number; comment: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/items/${itemId}/add_review`, reviewData, { headers: this.getHeaders() })
-      .pipe(catchError(this.handleErrors));
+    .pipe(catchError(this.handleErrors));
   }
 
   // Edit a Review 
   editReview(itemId: string, reviewId: string, reviewData: { rating: number; comment: string }): Observable<any> {
     // console.log(`Sending PUT request to /items/${itemId}/reviews/${reviewId}`, reviewData);
     return this.http.put(`${this.apiUrl}/items/${itemId}/reviews/${reviewId}`, reviewData, { headers: this.getHeaders() })
-      .pipe(catchError(this.handleErrors));
+    .pipe(catchError(this.handleErrors));
   }
 
   ///////////////////////////////////////
@@ -217,20 +217,34 @@ export class ApiService {
   // View GP Profile
   getGpProfile(): Observable<any> {
     return this.http.get(`${this.apiUrl}/gp/profile`, { headers: this.getHeaders() })
-      .pipe(catchError(this.handleErrors));
+    .pipe(catchError(this.handleErrors));
   }
 
   // View Gp Appointments
   getGpAppointments(): Observable<any> {
     return this.http.get(`${this.apiUrl}/gp_appointments`, { headers: this.getHeaders() })
-      .pipe(catchError(this.handleErrors));
+    .pipe(catchError(this.handleErrors));
   }
 
   // Edit Appointments
   editAppointmentStatus(appointmentId: string, status: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/appointments/edit_status/${appointmentId}`, { status: status }, { headers: this.getHeaders() })
-      .pipe(catchError(this.handleErrors));
+    .pipe(catchError(this.handleErrors));
   }
 
- 
+ // Fetch all patients for a GP
+getGpPatients(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/gp/patients`, { headers: this.getHeaders() })
+  .pipe(catchError(this.handleErrors));
+}
+
+
+/////////////////////////////////////////
+//////////////// Chatbot////////////////
+  sendMessageToChatbot(message: string): Observable<any> {
+    const postData = { message: message };
+    return this.http.post(`${this.apiUrl}/api/chat`, postData, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleErrors));
+    
+  }
 }

@@ -4,8 +4,6 @@ import json
 import logging
 
 
-
-
 # Set up basic configuration for logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -28,11 +26,11 @@ def test_login(client):
         'email': 'test@gmail.com',
         'password': 'tester'
     })
-    # Checks status code for a successful login is 200 and includes a token in the response
-    assert response.status_code == 200
-    assert 'token' in json.loads(response.data)
+    expected_status = 200
+    # Improved error message
+    assert response.status_code == expected_status, f"Expected status code {expected_status} but got {response.status_code} instead."
+    assert 'token' in json.loads(response.data), "Login response does not include a token."
     logging.debug("Login test passed for test@gmail.com")
-
 
 
 
@@ -48,6 +46,7 @@ def test_logout(client):
     assert response.status_code == 200
     assert 'Logged out successfully' in response.get_json()['message']
     logging.debug("Logout test passed.")
+
 
 
 # def test_register_new_user(client):

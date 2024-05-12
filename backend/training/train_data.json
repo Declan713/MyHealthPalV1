@@ -1,0 +1,40 @@
+[
+  {
+    "intent": "navigation_help",
+    "examples": [
+      "How do I add a an item to my basket?",
+      "Where can I submit a review on an item?",
+      "How do I logout?",
+      "How do I find my account?",
+      "How do I book an appointment?",
+      "How can I view my appointments?",
+      "Where can I find my account details?"
+    ]
+  },
+  {
+    "intent": "health_advice",
+    "examples": [
+      "Where can I get advice on my health?",
+      "What are the symptoms of a cold?",
+      "Can I get information on diabetes treatment?",
+      "How do I manage high blood pressure?",
+      "What should I do if I feel anxious?",
+      "Symptoms of the flu and how to treat it",
+      "Preventative measures for heart disease",
+      "Best practices for mental health care",
+      "Guidance on nutritional diets",
+      "Who to consult for skin problems?",
+      "Emergency steps for an asthma attack"
+    ]
+  },
+  {
+    "intent": "prescription_help",
+    "examples": [
+      "Where can I get my prescription",
+      "How can I get my prescriptions?",
+      "Is there a way to renew my prescription online?",
+      "Can I get my medication delivered?",
+      "Process for getting prescription for antibiotics?"
+    ]
+  }
+]

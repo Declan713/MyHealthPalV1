@@ -1,0 +1,128 @@
+[{
+  "_id": {
+    "$oid": "6605dbf80a65430d9ec1bc7d"
+  },
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJG9FNEI2UDg4UDNsUk5VLktHRG83VE9kb01DelhHYnk3aHBXZTkxZDVnTERDS1VPQUhTNzhh",
+      "subType": "00"
+    }
+  },
+  "medicalNumber": "ABC123",
+  "basket": [],
+  "purchaseHistory": [],
+  "admin": false,
+  "role": "user",
+  "avatar": "man.png"
+},
+{
+  "_id": {
+    "$oid": "6605dbf80a65430d9ec1bc7e"
+  },
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJFdsVTBEWmVqZkUwVTFMb3NRU2RnMS5PNFNFQ2J2eXRiVW9ZQUNPdVJlbHRMYmR1bk5KWkdH",
+      "subType": "00"
+    }
+  },
+  "medicalNumber": "ABC456",
+  "basket": [],
+  "purchaseHistory": [],
+  "admin": false,
+  "role": "user",
+  "avatar": "woman.png"
+},
+{
+  "_id": {
+    "$oid": "6605dbf80a65430d9ec1bc7f"
+  },
+  "name": "Declan Madden",
+  "email": "DM@example.com",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJFRKYlBOZWdLZWx2S09aSGUwLlNkWk9yTmVRYng2TGJFVGFtRmxwR3k2NmhucmdwMzZMOXMu",
+      "subType": "00"
+    }
+  },
+  "medicalNumber": "0000",
+  "basket": [],
+  "purchaseHistory": [],
+  "admin": true,
+  "role": "admin",
+  "avatar": "admin.png"
+},
+{
+  "_id": {
+    "$oid": "661bf0984e0f4feab2b17a5f"
+  },
+  "name": "Bob",
+  "email": "B@example.com",
+  "avatar": "man.png",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJGtNbzc2b0MyY2V1OUJDRzZCYmVRb3VCamRia1BIdC5UZ0NRTWtMUWZ3RlNMRUh6NllLdUpP",
+      "subType": "00"
+    }
+  },
+  "medicalNumber": "BB123",
+  "basket": [],
+  "purchaseHistory": [],
+  "role": "user"
+},
+{
+  "_id": {
+    "$oid": "661c05d64e0f4feab2b17a60"
+  },
+  "name": "test user",
+  "email": "test@gmail.com",
+  "avatar": "man.png",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJGZZU2g5Z2tVcDdpMHcySURLNlVaOS5hd0lrQ2dNcHA3N1JOT0tsdzNyZ0RYZkdadHZYc3FX",
+      "subType": "00"
+    }
+  },
+  "medicalNumber": "BB1",
+  "basket": [
+    {
+      "_id": {
+        "$oid": "661166d0792793731285f638"
+      },
+      "name": "Digital Blood Pressure Monitor",
+      "price": 49.99,
+      "item_image": "Digital_Blood_Pressure_Monitor.png",
+      "quantity": 1
+    }
+  ],
+  "purchaseHistory": [
+    {
+      "name": "Collagen Powder",
+      "quantity": 3,
+      "price": 29.99,
+      "totalPrice": 89.97
+    }
+  ],
+  "role": "user"
+},
+{
+  "_id": {
+    "$oid": "6638f1bd0625f214ddc1f26e"
+  },
+  "name": "Dec",
+  "email": "Dec@gmail.com",
+  "avatar": "man.png",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJExHaUZrTnZEOG82QW9vMllVb0oybE9mMFk2dGxCM0tsQmVQOGdOU29xM3hvdTR0SlR5cnZ1",
+      "subType": "00"
+    }
+  },
+  "medicalNumber": "QW12",
+  "basket": [],
+  "purchaseHistory": [],
+  "role": "user"
+}]

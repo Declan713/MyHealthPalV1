@@ -49,10 +49,12 @@ export class ItemComponent implements OnInit {
 
     this.apiService.addToBasket(itemId).subscribe({
       next: (response: any) => {
-        console.log('added to basket successfully!', response)
+        console.log('added to basket successfully!', response);
+        this.flashMessageService.showFlashMessage('Item added to basket successfully!', 'success');
       },
       error: (error) => {
-        console.error('Error adding')
+        console.error('Error adding to basket:', error);
+        this.flashMessageService.showFlashMessage('Error adding item to basket!', 'error');
       }
       
     })
@@ -66,11 +68,11 @@ export class ItemComponent implements OnInit {
       this.apiService.deleteReview(itemId, reviewId).subscribe({
         next: () => {
           this.reviews = this.reviews.filter(review => review.review_id !== reviewId);
-          this.flashMessageService.showFlashMessage('Review deleted successfully!!');
+          this.flashMessageService.showFlashMessage('Review deleted successfully!!', 'success');
         },
         error: (error) => {
           console.error('Failed to delete review:', error);
-          this.flashMessageService.showFlashMessage('You can only delete your own reviews!!');
+          this.flashMessageService.showFlashMessage('You can only delete your own reviews!!', 'error');
         }
       });
     }
@@ -85,6 +87,7 @@ export class ItemComponent implements OnInit {
           console.log(reviewData);
           console.log('Review added successfully:', response);
           this.closeAddReviewModal();
+          this.flashMessageService.showFlashMessage('Review Added Successfully!!', 'success');
         },
         error: (error) => console.error('Error adding review:', error)
       });
@@ -109,11 +112,12 @@ export class ItemComponent implements OnInit {
           console.log('Review Updated Successfully:', response);
           this.showEditReviewModal = false;
           this.loadItem(itemId);
+          this.flashMessageService.showFlashMessage('Review Updated Successfully!!', 'success');
         },
         error: (error) => {
           console.error('Error Updating Review:', error);
           this.showEditReviewModal = false;
-          this.flashMessageService.showFlashMessage('You can only Edit your own reviews!!');
+          this.flashMessageService.showFlashMessage('You can only Edit your own reviews!!', 'error');
         }
       });
     }

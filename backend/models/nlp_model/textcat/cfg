@@ -1,0 +1,9 @@
+{
+  "labels":[
+    "navigation_help",
+    "health_advice",
+    "prescription_help"
+  ],
+  "threshold":0.0,
+  "positive_label":null
+}

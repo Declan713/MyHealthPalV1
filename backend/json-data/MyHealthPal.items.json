@@ -1,0 +1,615 @@
+[{
+  "_id": {
+    "$oid": "661166d0792793731285f636"
+  },
+  "name": "Electric Toothbrush",
+  "item_image": "Electric_Toothbrush.png",
+  "category": "Health/Personal Care",
+  "description": "High-powered electric toothbrush for effective oral hygiene.",
+  "price": 39.99,
+  "stock_quantity": 30,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f619"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 5,
+      "comment": "Leaves my teeth feeling exceptionally clean.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.071Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f637"
+  },
+  "name": "Essential Oil Diffuser",
+  "item_image": "Essential_Oil_Diffuser.png",
+  "category": "Health/Personal Care",
+  "description": "Aromatherapy diffuser for a calming and relaxing atmosphere.",
+  "price": 29.99,
+  "stock_quantity": 80,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f61a"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Lovely addition to my relaxation routine.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.073Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f638"
+  },
+  "name": "Digital Blood Pressure Monitor",
+  "item_image": "Digital_Blood_Pressure_Monitor.png",
+  "category": "Health/Personal Care",
+  "description": "Accurate digital blood pressure monitor for at-home monitoring.",
+  "price": 49.99,
+  "stock_quantity": 50,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f61c"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 3,
+      "comment": "Easy to use and provides reliable readings.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.075Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f61d"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 3,
+      "comment": "A must-have for regular health check-ups.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.077Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "6638f6a90625f214ddc1f270"
+      },
+      "user_id": {
+        "$oid": "661c05d64e0f4feab2b17a60"
+      },
+      "name": "test user",
+      "rating": 5,
+      "comment": "This is a good item!",
+      "date": {
+        "$date": "2024-05-06T15:26:33.096Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f639"
+  },
+  "name": "Weighted Blanket",
+  "item_image": "Weighted_Blanket.png",
+  "category": "Health/Personal Care",
+  "description": "Calming weighted blanket for better sleep and relaxation.",
+  "price": 69.99,
+  "stock_quantity": 40,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f61e"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Helps alleviate anxiety and promotes deep sleep.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.080Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f61f"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "Feels comforting and cozy.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.082Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f63a"
+  },
+  "name": "Fitness Tracker",
+  "item_image": "Fitness_Tracker.png",
+  "category": "Health/Personal Care",
+  "description": "Smart fitness tracker for monitoring activity and health metrics.",
+  "price": 79.99,
+  "stock_quantity": 30,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f620"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 5,
+      "comment": "Tracks steps, heart rate, and more accurately.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.085Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f621"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 5,
+      "comment": "Motivates me to stay active throughout the day.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.088Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f63b"
+  },
+  "name": "Whey Protein Powder",
+  "item_image": "Whey_Protein_Powder.png",
+  "category": "Sports and Nutrition",
+  "description": "High-quality whey protein powder for muscle building and recovery.",
+  "price": 29.99,
+  "stock_quantity": 50,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f622"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Great taste and mixes well.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.091Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f623"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 5,
+      "comment": "Effective for post-workout recovery.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.094Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f63c"
+  },
+  "name": "BCAA Capsules",
+  "item_image": "BCAA_Capsules.png",
+  "category": "Sports and Nutrition",
+  "description": "Branched-chain amino acids (BCAA) capsules for improved endurance.",
+  "price": 24.99,
+  "stock_quantity": 60,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f624"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Helps reduce muscle soreness after workouts.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.095Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f625"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "Boosts energy during long runs.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.096Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f63d"
+  },
+  "name": "Pre-Workout Energy Drink",
+  "item_image": "Energy_Drink.png",
+  "category": "Sports and Nutrition",
+  "description": "Energizing drink with caffeine and electrolytes for pre-workout boost.",
+  "price": 19.99,
+  "stock_quantity": 40,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f626"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Gives a good energy kick before workouts.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.097Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f627"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "Great for intense training sessions.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.098Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f63e"
+  },
+  "name": "Vegan Protein Bars",
+  "item_image": "Vegan_Bar.png",
+  "category": "Sports and Nutrition",
+  "description": "Plant-based protein bars for a quick and nutritious snack.",
+  "price": 2.49,
+  "stock_quantity": 80,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f628"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Tastes amazing and good for on-the-go.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.100Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f629"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "Perfect for a post-workout snack.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.101Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f63f"
+  },
+  "name": "Electrolyte Sports Drink Mix",
+  "item_image": "Electrolyte.png",
+  "category": "Sports and Nutrition",
+  "description": "Replenishing drink mix with electrolytes for hydration during exercise.",
+  "price": 12.99,
+  "stock_quantity": 55,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f62a"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Keeps me hydrated during long runs.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.102Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f62b"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "Great for cycling in hot weather.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.105Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f640"
+  },
+  "name": "Multivitamin Tablets",
+  "item_image": "Multivitamin.png",
+  "category": "Vitamins and Supplements",
+  "description": "Comprehensive multivitamin tablets for overall health.",
+  "price": 19.99,
+  "stock_quantity": 100,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f62c"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Great combination of essential vitamins.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.116Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f62d"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "Noticeable improvement in energy levels.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.127Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f641"
+  },
+  "name": "Vitamin D3 Softgels",
+  "item_image": "VD3.png",
+  "category": "Vitamins and Supplements",
+  "description": "Vitamin D3 supplement for bone health and immune support.",
+  "price": 14.99,
+  "stock_quantity": 80,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f62e"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Essential for those with limited sun exposure.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.128Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f62f"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "Easy to take and effective.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.130Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f642"
+  },
+  "name": "Fish Oil Capsules",
+  "item_image": "Fish_Oil.png",
+  "category": "Vitamins and Supplements",
+  "description": "Omega-3 fish oil capsules for heart and brain health.",
+  "price": 22.99,
+  "stock_quantity": 60,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f630"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "High-quality source of omega-3 fatty acids.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.131Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f631"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "Supports cognitive function.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.132Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f643"
+  },
+  "name": "Probiotic Supplements",
+  "item_image": "Prob.png",
+  "category": "Vitamins and Supplements",
+  "description": "Probiotic capsules for gut health and digestive balance.",
+  "price": 17.99,
+  "stock_quantity": 90,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f632"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Improved digestion and immune system.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.133Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f633"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "A staple for maintaining a healthy gut.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.134Z"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661166d0792793731285f644"
+  },
+  "name": "Collagen Powder",
+  "item_image": "Collagen.png",
+  "category": "Vitamins and Supplements",
+  "description": "Collagen powder for skin, hair, and joint support.",
+  "price": 29.99,
+  "stock_quantity": 70,
+  "item_reviews": [
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f634"
+      },
+      "user_id": {
+        "$oid": "6605dbf80a65430d9ec1bc7d"
+      },
+      "name": "John Doe",
+      "rating": 4,
+      "comment": "Visible improvement in skin elasticity.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.135Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "661166d0792793731285f635"
+      },
+      "user_id": {
+        "$oid": "65cba52b3954240754d76bcb"
+      },
+      "name": "Jane Smith",
+      "rating": 4,
+      "comment": "Helps with joint flexibility.",
+      "date": {
+        "$date": "2024-04-06T15:14:24.136Z"
+      }
+    },
+    {
+      "review_id": {
+        "$oid": "6621ab9bead0f7889eb6a77b"
+      },
+      "user_id": {
+        "$oid": "661c05d64e0f4feab2b17a60"
+      },
+      "name": "test user",
+      "rating": 3,
+      "comment": "testing",
+      "date": {
+        "$date": "2024-04-18T23:24:11.933Z"
+      }
+    }
+  ]
+}]

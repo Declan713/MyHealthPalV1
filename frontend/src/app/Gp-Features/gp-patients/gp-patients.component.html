@@ -1,0 +1,14 @@
+<div class="all-users-container">
+    <h1>GP Patients</h1>
+    <p *ngIf="loading">Loading patients...</p>
+    <p *ngIf="error">Error: {{ error }}</p>
+    <p class="user-count">User count: {{patients.length}}</p>
+    
+    <div *ngFor="let patient of patients" class="user-card">
+        <div class="user-info">
+          <p><strong>Name:</strong> {{ patient.name }}</p>
+          <p><strong>Email:</strong> {{ patient.email }}</p>
+          <p><strong>Medical Number:</strong> {{ patient.medicalNumber }}</p>
+        </div>
+    </div>
+</div>
