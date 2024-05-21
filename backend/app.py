@@ -65,10 +65,10 @@ def jwt_required(func):
         print(f"Authorization header: {auth_header}")
         if auth_header and auth_header.startswith('Bearer '):
             token = auth_header.split(" ")[1]
-            print(f"Token extracted: {token}") 
+            # print(f"Token extracted: {token}") 
             
             decoded_token = decode_token(token)
-            print(f"Decoded token: {decoded_token}")
+            # print(f"Decoded token: {decoded_token}")
             
             if 'error' not in decoded_token:
                 request.current_user = decoded_token
